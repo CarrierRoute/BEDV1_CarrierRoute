@@ -15,7 +15,7 @@ public class FlightCabinClass {
     private Flight flight;
 
     @Column(name = "cabin_class", length = 20, nullable = false)
-    private String cabinClass;
+    private CabinClass cabinClass;
 
     @Column(name = "seat_count", nullable = false)
     private Long seatCount;
