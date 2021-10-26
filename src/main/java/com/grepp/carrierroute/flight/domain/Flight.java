@@ -1,7 +1,7 @@
 package com.grepp.carrierroute.flight.domain;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "flight")
@@ -18,10 +18,10 @@ public class Flight {
     private String arrivalCity;
 
     @Column(name = "departure_time", nullable = false)
-    private LocalDateTime departureTime;
+    private LocalDate departureDate;
 
     @Column(name = "arrival_time", nullable = false)
-    private LocalDateTime arrivalTime;
+    private LocalDate arrivalDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "airline_id", referencedColumnName = "id")
