@@ -27,4 +27,8 @@ public class Flight {
     @JoinColumn(name = "airline_id", referencedColumnName = "id")
     private Airline airline;
 
+    protected Flight(){
+
+    }
+
 }

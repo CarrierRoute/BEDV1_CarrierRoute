@@ -15,4 +15,8 @@ public class Airline {
 
     @Column(name = "refund_policy", length = 3, nullable = false)
     private String refundPolicy;
+
+    protected Airline(){
+
+    }
 }

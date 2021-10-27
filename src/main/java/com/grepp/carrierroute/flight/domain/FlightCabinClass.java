@@ -23,5 +23,8 @@ public class FlightCabinClass {
     @Column(name = "seat_cost", nullable = false)
     private Long seatCost;
 
+    protected FlightCabinClass(){
+
+    }
 
 }
