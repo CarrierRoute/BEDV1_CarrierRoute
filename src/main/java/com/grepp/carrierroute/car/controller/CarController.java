@@ -1,0 +1,26 @@
+package com.grepp.carrierroute.car.controller;
+
+import com.grepp.carrierroute.car.dto.CarResponseDto;
+import com.grepp.carrierroute.car.dto.CarSearchDto;
+import com.grepp.carrierroute.car.service.CarService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/v1/cars")
+@RequiredArgsConstructor
+public class CarController {
+
+    private final CarService carService;
+
+    @GetMapping
+    public List<CarResponseDto> findAllByCondition(@Valid @RequestBody CarSearchDto carSearchDto) {
+        return carService.findAllByCondition(carSearchDto);
+    }
+}
