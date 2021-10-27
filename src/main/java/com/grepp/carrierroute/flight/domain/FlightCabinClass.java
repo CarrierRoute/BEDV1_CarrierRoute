@@ -1,6 +1,7 @@
 package com.grepp.carrierroute.flight.domain;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "flight_cabin_class")
@@ -27,4 +28,11 @@ public class FlightCabinClass {
 
     }
 
+    public void setFlight(Flight flight) {
+        if(Objects.nonNull(this.flight)) {
+            this.flight.getFlightCabinClasses().remove(this);
+        }
+        this.flight = flight;
+        flight.getFlightCabinClasses().add(this);
+    }
 }

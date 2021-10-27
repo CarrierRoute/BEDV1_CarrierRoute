@@ -2,6 +2,8 @@ package com.grepp.carrierroute.flight.domain;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -28,6 +30,13 @@ public class Flight {
     @JoinColumn(name = "airline_id", referencedColumnName = "id")
     private Airline airline;
 
+    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FlightCabinClass> flightCabinClasses = new ArrayList<>();
+
+    public void addFlightCabinClass(FlightCabinClass flightCabinClass) {
+        flightCabinClass.setFlight(this);
+    }
+
     protected Flight(){
 
     }
@@ -38,5 +47,9 @@ public class Flight {
         }
         this.airline = airline;
         airline.getFlights().add(this);
+    }
+
+    public List<FlightCabinClass> getFlightCabinClasses() {
+        return this.flightCabinClasses;
     }
 }
