@@ -1,7 +1,7 @@
 package com.grepp.carrierroute.flight.domain;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -21,10 +21,10 @@ public class Flight {
     private String arrivalCity;
 
     @Column(name = "departure_time", nullable = false)
-    private LocalDate departureDate;
+    private LocalDateTime departureDate;
 
     @Column(name = "arrival_time", nullable = false)
-    private LocalDate arrivalDate;
+    private LocalDateTime arrivalDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "airline_id", referencedColumnName = "id")
