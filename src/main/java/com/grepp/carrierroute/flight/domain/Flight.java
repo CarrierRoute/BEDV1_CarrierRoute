@@ -2,6 +2,7 @@ package com.grepp.carrierroute.flight.domain;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "flight")
@@ -31,4 +32,11 @@ public class Flight {
 
     }
 
+    public void setAirline(Airline airline) {
+        if(Objects.nonNull(this.airline)) {
+            this.airline.getFlights().remove(this);
+        }
+        this.airline = airline;
+        airline.getFlights().add(this);
+    }
 }
