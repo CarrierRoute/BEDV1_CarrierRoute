@@ -21,10 +21,10 @@ public class Flight {
     private String arrivalCity;
 
     @Column(name = "departure_time", nullable = false)
-    private LocalDateTime departureDate;
+    private LocalDateTime departureDateTime;
 
     @Column(name = "arrival_time", nullable = false)
-    private LocalDateTime arrivalDate;
+    private LocalDateTime arrivalDateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "airline_id", referencedColumnName = "id")
@@ -49,7 +49,32 @@ public class Flight {
         airline.getFlights().add(this);
     }
 
+    public FlightCabinClass findFlightCabinClassBy(CabinClass cabinClass){
+        return this.flightCabinClasses.stream().filter(flightCabinClass -> flightCabinClass.getCabinClass().equals(cabinClass)).findFirst().get();
+    }
+
+    //GETTER
     public List<FlightCabinClass> getFlightCabinClasses() {
         return this.flightCabinClasses;
+    }
+
+    public String getDepartureCity() {
+        return departureCity;
+    }
+
+    public String getArrivalCity() {
+        return arrivalCity;
+    }
+
+    public LocalDateTime getDepartureDateTime() {
+        return departureDateTime;
+    }
+
+    public LocalDateTime getArrivalDateTime() {
+        return arrivalDateTime;
+    }
+
+    public Airline getAirline() {
+        return airline;
     }
 }

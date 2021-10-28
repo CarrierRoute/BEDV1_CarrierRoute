@@ -35,4 +35,22 @@ public class FlightCabinClass {
         this.flight = flight;
         flight.getFlightCabinClasses().add(this);
     }
+
+    // GETTER
+
+    public Flight getFlight() {
+        return flight;
+    }
+
+    public CabinClass getCabinClass() {
+        return cabinClass;
+    }
+
+    public Long getSeatCount() {
+        return seatCount;
+    }
+
+    public Long getSeatCost() {
+        return seatCost;
+    }
 }
