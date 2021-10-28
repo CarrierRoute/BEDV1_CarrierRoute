@@ -3,12 +3,12 @@ package com.grepp.carrierroute.flight.dto;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Builder
 @Getter
 public class FlightSearchResponseDto {
+    private Long flightId;
     private String departureCity;
     private String arrivalCity;
     private LocalDateTime departureDateTime;

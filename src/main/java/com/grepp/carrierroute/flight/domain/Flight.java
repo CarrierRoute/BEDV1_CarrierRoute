@@ -54,6 +54,10 @@ public class Flight {
     }
 
     //GETTER
+    public Long getId(){
+        return this.id;
+    }
+
     public List<FlightCabinClass> getFlightCabinClasses() {
         return this.flightCabinClasses;
     }

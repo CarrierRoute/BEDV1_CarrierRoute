@@ -9,6 +9,7 @@ public class FlightConverter {
 
     public FlightSearchResponseDto convertFlightSearchResponseDto(Flight flight,Long flightCost) {
         return FlightSearchResponseDto.builder()
+                .flightId(flight.getId())
                 .departureCity(flight.getDepartureCity())
                 .departureDateTime(flight.getDepartureDateTime())
                 .arrivalCity(flight.getArrivalCity())

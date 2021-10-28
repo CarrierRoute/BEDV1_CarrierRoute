@@ -31,17 +31,23 @@ public class FlightService {
 
     public List<FlightSearchResponseDto> findFlightsBy(FlightSearchRequestDto flightSearchRequestDto) {
         List<Flight> flights = findFlightsBy(flightSearchRequestDto.getDepartureCity(),flightSearchRequestDto.getDepartureDate(),
-                flightSearchRequestDto.getArrivalCity(),flightSearchRequestDto.getHeadCount(),
-                flightSearchRequestDto.getCabinClass());
-        return flights.stream().map(flight -> flightConverter.convertFlightSearchResponseDto(flight, flight.findFlightCabinClassBy(CabinClass.valueOf(flightSearchRequestDto.getCabinClass())).getSeatCost())).collect(Collectors.toList());
+                                            flightSearchRequestDto.getArrivalCity(),flightSearchRequestDto.getHeadCount(),
+                                            flightSearchRequestDto.getCabinClass());
+        return flights.stream()
+                        .map(flight -> flightConverter.convertFlightSearchResponseDto(flight,
+                                                                                    flight.findFlightCabinClassBy(CabinClass.valueOf(flightSearchRequestDto.getCabinClass())).getSeatCost()))
+                        .collect(Collectors.toList());
     }
 
     private List<Flight> findFlightsBy(String departureCity, LocalDate departureDate, String arrivalCity, Long headCount, String cabinClass) {
         List<Long> flightIds = flightRepository.findFlightsBy(arrivalCity,departureDate,departureCity,headCount,cabinClass);
-        return flightIds.stream().map(flightId -> flightRepository.findById(flightId).get()).collect(Collectors.toList());
+        return flightIds.stream()
+                        .map(flightId -> flightRepository.findById(flightId).get())
+                        .collect(Collectors.toList());
     }
 
     public FlightSearchResponseDto findFlightBy(Long flightId) {
-        return flightConverter.convertFlightSearchResponseDto(flightRepository.findById(flightId).get(),flightCabinClassRepository.findById(flightId).get().getSeatCost());
+        return flightConverter.convertFlightSearchResponseDto(flightRepository.findById(flightId).get(),
+                                                            flightCabinClassRepository.findById(flightId).get().getSeatCost());
     }
 }
