@@ -85,3 +85,4 @@ public class Car extends BaseTimeEntity implements Persistable<String> {
         return getCreatedDate() == null;
     }
 }
+
