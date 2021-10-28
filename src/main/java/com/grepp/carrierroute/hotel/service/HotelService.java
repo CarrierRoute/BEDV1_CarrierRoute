@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class HotelService {
     private final HotelRoomRepository hotelRoomRepository;
     private final HotelRepository hotelRepository;

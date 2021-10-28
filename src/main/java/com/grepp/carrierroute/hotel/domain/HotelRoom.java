@@ -1,7 +1,5 @@
 package com.grepp.carrierroute.hotel.domain;
 
-import com.grepp.carrierroute.hotel.exception.ErrorMessage;
-import com.grepp.carrierroute.hotel.exception.InvalidHotelRoomParameterException;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,13 +20,13 @@ public class HotelRoom {
     private RoomType roomType;
 
     @Column(name = "count", nullable = false)
-    private int count;
+    private Integer count;
 
     @Column(name = "max_guests", nullable = false)
-    private int maxGuestNumber;
+    private Integer maxGuestNumber;
 
     @Column(name = "price_per_day", nullable = false)
-    private long pricePerDay;
+    private Long pricePerDay;
 
     @Column(name = "photo_url", length = 100)
     private String photoUrl;
@@ -39,16 +37,12 @@ public class HotelRoom {
 
     @Builder
     public HotelRoom(@NonNull RoomType roomType,
-                     int count,
-                     int maxGuestNumber,
-                     long pricePerDay,
+                     @NonNull Integer count,
+                     @NonNull Integer maxGuestNumber,
+                     @NonNull Long pricePerDay,
                      String photoUrl,
-                     @NonNull Hotel hotel) throws InvalidHotelRoomParameterException
+                     @NonNull Hotel hotel)
     {
-        if(count == 0 || maxGuestNumber == 0 || pricePerDay == 0){
-            throw new InvalidHotelRoomParameterException(ErrorMessage.INVALID_HOTEL_ROOM_PARAMETER);
-        }
-
         this.roomType = roomType;
         this.count = count;
         this.maxGuestNumber = maxGuestNumber;

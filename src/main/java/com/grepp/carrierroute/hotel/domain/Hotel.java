@@ -30,10 +30,10 @@ public class Hotel {
     private String country;
 
     @Column(name = "guest_rating", nullable = false)
-    private float guestRating;
+    private Float guestRating;
 
     @Column(name = "star_rating", nullable = false)
-    private int starRating;
+    private Integer starRating;
 
     @Column(name = "description", length = 200)
     private String description;
@@ -55,8 +55,8 @@ public class Hotel {
                  @NonNull String address,
                  @NonNull String city,
                  @NonNull String country,
-                 float guestRating,
-                 int starRating,
+                 @NonNull float guestRating,
+                 @NonNull int starRating,
                  String description,
                  @NonNull LocalTime checkInTime,
                  @NonNull LocalTime checkOutTime,

@@ -14,20 +14,18 @@ public class HotelSearchRequestDto {
     private String destinationName;
     private LocalDate startDate;
     private LocalDate endDate;
-    private int guestNumber;
-    private int numOfRoom;
+    private Integer guestNumber;
+    private Integer numOfRoom;
 
     @Builder
     public HotelSearchRequestDto(@NonNull DestinationType destinationType,
                                  @NonNull String destinationName,
                                  @NonNull LocalDate startDate,
                                  @NonNull LocalDate endDate,
-                                 int guestNumber,
-                                 int numOfRoom) throws InvalidHotelSearchParameterException, NullPointerException
+                                 @NonNull int guestNumber,
+                                 @NonNull int numOfRoom) throws InvalidHotelSearchParameterException, NullPointerException
     {
-        if(guestNumber == 0 || numOfRoom == 0 || !endDate.isAfter(startDate)){
-            throw new InvalidHotelSearchParameterException(ErrorMessage.INVALID_HOTEL_SEARCH_PARAMTER);
-        }
+        validateDate(startDate, endDate);
 
         this.destinationType = destinationType;
         this.destinationName = destinationName;
@@ -35,5 +33,11 @@ public class HotelSearchRequestDto {
         this.endDate = endDate;
         this.guestNumber = guestNumber;
         this.numOfRoom = numOfRoom;
+    }
+
+    private void validateDate(LocalDate startDate, LocalDate endDate) throws InvalidHotelSearchParameterException {
+        if(!endDate.isAfter(startDate)){
+            throw new InvalidHotelSearchParameterException(ErrorMessage.INVALID_HOTEL_SEARCH_PARAMTER);
+        }
     }
 }
