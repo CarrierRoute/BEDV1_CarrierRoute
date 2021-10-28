@@ -17,13 +17,13 @@ public interface CarBookingRepository extends JpaRepository<CarBooking, Long> {
             "from CarBooking cb " +
             "where cb.period.startDateTime between :startDateTime and :endDateTime " +
             "or cb.period.endDateTime between :startDateTime and :endDateTime")
-    List<String> findBookedCarIdsByDate(@Param("startDateTime") LocalDateTime startDateTime, @Param("endDateTime") LocalDateTime endDateTime);
+    List<String> findBookedCarIdsByDateTime(@Param("startDateTime") LocalDateTime startDateTime, @Param("endDateTime") LocalDateTime endDateTime);
 
     @Query(value = "select cb from CarBooking cb where cb.car.id = :id " +
             "and (cb.period.startDateTime between :startDateTime and :endDateTime " +
             "or cb.period.endDateTime between :startDateTime and :endDateTime)")
     Optional<CarBooking> findByIdAndDateTime(@Param("id") String id, @Param("startDateTime") LocalDateTime startDateTime, @Param("endDateTime") LocalDateTime endDateTime);
 
-    @Query(value = "select new com.grepp.carrierroute.booking.dto.CarBookingSimpleResponseDto(cb.id, c.id, c.image, cb.period.startDateTime, cb.period.endDateTime) from CarBooking cb join cb.car c")
+    @Query(value = "select new com.grepp.carrierroute.booking.dto.CarBookingSimple(cb.id, c.id, c.image, cb.period.startDateTime, cb.period.endDateTime) from CarBooking cb join cb.car c")
     List<CarBookingResponseDto> findCarBookings();
 }
