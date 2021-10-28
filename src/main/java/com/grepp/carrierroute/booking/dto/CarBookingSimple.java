@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @Getter
-public class CarBookingSimpleResponseDto {
+public class CarBookingSimple {
     private Long id;
     private String carId;
     private String image;

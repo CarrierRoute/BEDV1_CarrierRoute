@@ -15,7 +15,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class CarBookingService {
 
     private final CarBookingRepository carBookingRepository;
@@ -58,5 +57,10 @@ public class CarBookingService {
                 .orElseThrow(() -> new RuntimeException("Not Found Car. Car Id : " + id));
 
         return carBookingConverter.convertCarBookingResponseDto(carBooking, car);
+    }
+
+    @Transactional
+    public void cancelBooking(Long bookingId) {
+        carBookingRepository.deleteById(bookingId);
     }
 }
