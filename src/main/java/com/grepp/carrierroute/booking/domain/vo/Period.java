@@ -2,7 +2,6 @@ package com.grepp.carrierroute.booking.domain.vo;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.Embeddable;
 import java.time.LocalDateTime;
 
