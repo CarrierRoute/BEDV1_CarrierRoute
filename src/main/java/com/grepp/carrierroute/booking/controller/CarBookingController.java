@@ -4,10 +4,7 @@ import com.grepp.carrierroute.booking.dto.CarBookingRequestDto;
 import com.grepp.carrierroute.booking.dto.CarBookingResponseDto;
 import com.grepp.carrierroute.booking.service.CarBookingService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,5 +25,8 @@ public class CarBookingController {
         return carBookingService.getCarBookings();
     }
 
-
+    @GetMapping("/profile/bookings/cars/{bookingId}")
+    public CarBookingResponseDto getCarBooking(@PathVariable Long bookingId) {
+        return carBookingService.getCarBooking(bookingId);
+    }
 }

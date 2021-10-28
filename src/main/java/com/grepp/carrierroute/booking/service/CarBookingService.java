@@ -28,9 +28,9 @@ public class CarBookingService {
                 .orElseThrow(() -> new RuntimeException("Car Not Found, Car id : " + carBookingRequestDto.getCarId()));
 
         carBookingRepository.findByIdAndDateTime(carBookingRequestDto.getCarId(), carBookingRequestDto.getStartDateTime(), carBookingRequestDto.getEndDateTime())
-        .ifPresent(carBooking -> {
-            throw new RuntimeException("Already Booked Car. Car Id : "+ carBookingRequestDto.getCarId());
-        });
+                .ifPresent(carBooking -> {
+                    throw new RuntimeException("Already Booked Car. Car Id : " + carBookingRequestDto.getCarId());
+                });
 
         CarBooking carBooking = CarBooking.builder()
                 .car(car)
@@ -43,7 +43,20 @@ public class CarBookingService {
         return carBookingConverter.convertCarBookingResponseDto(save, car);
     }
 
+    @Transactional(readOnly = true)
     public List<CarBookingResponseDto> getCarBookings() {
         return carBookingRepository.findCarBookings();
+    }
+
+    @Transactional(readOnly = true)
+    public CarBookingResponseDto getCarBooking(Long bookingId) {
+        CarBooking carBooking = carBookingRepository.findById(bookingId)
+                .orElseThrow(() -> new RuntimeException("Not Found CarBooking. Booking Id :" + bookingId));
+
+        String id = carBooking.getCar().getId();
+        Car car = carRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Not Found Car. Car Id : " + id));
+
+        return carBookingConverter.convertCarBookingResponseDto(carBooking, car);
     }
 }

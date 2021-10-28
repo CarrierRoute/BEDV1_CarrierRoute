@@ -42,4 +42,8 @@ public class CarBooking {
     public LocalDateTime getEndDateTime(){
         return period.getEndDateTime();
     }
+
+    public Car getCar() {
+        return car;
+    }
 }
