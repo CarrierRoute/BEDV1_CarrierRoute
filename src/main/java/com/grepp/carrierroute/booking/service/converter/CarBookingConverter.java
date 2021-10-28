@@ -10,7 +10,8 @@ public class CarBookingConverter {
 
     public CarBookingResponseDto convertCarBookingResponseDto(CarBooking carBooking, Car car) {
         return CarBookingResponseDto.builder()
-                .id(car.getId())
+                .id(carBooking.getId())
+                .carId(car.getId())
                 .grade(car.getGrade())
                 .image(car.getImage())
                 .maxPassengers(car.getMaxPassengers())

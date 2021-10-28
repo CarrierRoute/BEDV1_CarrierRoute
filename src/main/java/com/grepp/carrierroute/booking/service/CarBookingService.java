@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.function.Consumer;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -41,5 +41,9 @@ public class CarBookingService {
         CarBooking save = carBookingRepository.save(carBooking);
 
         return carBookingConverter.convertCarBookingResponseDto(save, car);
+    }
+
+    public List<CarBookingResponseDto> getCarBookings() {
+        return carBookingRepository.findCarBookings();
     }
 }
