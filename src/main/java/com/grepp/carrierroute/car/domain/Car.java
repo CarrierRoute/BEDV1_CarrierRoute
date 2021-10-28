@@ -61,6 +61,7 @@ public class Car extends BaseTimeEntity implements Persistable<String> {
 
     public CarGrade getGrade() {
         return grade;
+
     }
 
     public int getPrice() {

@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+
 public class CarBooking {
 
     @Id

@@ -26,4 +26,14 @@ public interface CarBookingRepository extends JpaRepository<CarBooking, Long> {
 
     @Query(value = "select new com.grepp.carrierroute.booking.dto.CarBookingDetail(cb.id, c.id, c.image, cb.period.startDateTime, cb.period.endDateTime) from CarBooking cb join cb.car c")
     List<CarBookingResponseDto> findCarBookings();
+
+public interface CarBookingRepository extends JpaRepository<CarBooking, Long> {
+
+    @Query(value = "select distinct cb.car.id " +
+            "from CarBooking cb " +
+            "where not exists (select cb2.car.id " +
+            "from CarBooking cb2 " +
+            "where cb2.period.startDateTime between :startDateTime and :endDateTime " +
+            "or cb2.period.endDateTime between :startDateTime and :endDateTime)")
+    List<String> findAllByDate(@Param("startDateTime") LocalDateTime startDateTime, @Param("endDateTime") LocalDateTime endDateTime);
 }
