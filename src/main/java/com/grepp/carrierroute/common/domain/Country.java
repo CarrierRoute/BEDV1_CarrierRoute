@@ -1,17 +1,14 @@
 package com.grepp.carrierroute.common.domain;
 
 
-import com.grepp.carrierroute.flight.domain.Airline;
-import com.grepp.carrierroute.flight.domain.FlightCabinClass;
-
+import com.grepp.carrierroute.common.BaseTimeEntity;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "country")
-public class Country {
+public class Country extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

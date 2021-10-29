@@ -1,11 +1,13 @@
 package com.grepp.carrierroute.common.domain;
 
+import com.grepp.carrierroute.common.BaseTimeEntity;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "airport")
-public class Airport {
+public class Airport extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
