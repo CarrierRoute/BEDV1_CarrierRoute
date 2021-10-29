@@ -2,6 +2,7 @@ package com.grepp.carrierroute.booking.domain;
 
 import com.grepp.carrierroute.booking.domain.vo.Period;
 import com.grepp.carrierroute.car.domain.Car;
+import com.grepp.carrierroute.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -21,13 +22,18 @@ public class CarBooking {
     @JoinColumn(name = "car_id", referencedColumnName = "id")
     private Car car;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
     @Embedded
     private Period period;
 
     @Builder
-    public CarBooking(Long id, Car car, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+    public CarBooking(Long id, Car car, User user, LocalDateTime startDateTime, LocalDateTime endDateTime) {
         this.id = id;
         this.car = car;
+        this.user = user;
         this.period = new Period(startDateTime, endDateTime);
     }
 
@@ -45,5 +51,9 @@ public class CarBooking {
 
     public Car getCar() {
         return car;
+    }
+
+    public User getUser() {
+        return user;
     }
 }
