@@ -1,14 +1,11 @@
 package com.grepp.carrierroute.hotel.service;
 
 import com.grepp.carrierroute.hotel.domain.Hotel;
-import com.grepp.carrierroute.hotel.domain.HotelRoom;
-import com.grepp.carrierroute.hotel.dto.DestinationType;
-import com.grepp.carrierroute.hotel.dto.HotelSearchRequestDto;
-import com.grepp.carrierroute.hotel.dto.HotelSearchResponseDto;
+import com.grepp.carrierroute.hotel.dto.*;
+import com.grepp.carrierroute.hotel.exception.EmptyHotelInfoException;
 import com.grepp.carrierroute.hotel.exception.ErrorMessage;
 import com.grepp.carrierroute.hotel.exception.HotelInfoNotFoundedException;
 import com.grepp.carrierroute.hotel.repository.HotelRepository;
-import com.grepp.carrierroute.hotel.repository.HotelRoomRepository;
 import com.grepp.carrierroute.hotel.service.converter.HotelConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,32 +19,33 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class HotelService {
-    private final HotelRoomRepository hotelRoomRepository;
     private final HotelRepository hotelRepository;
     private final HotelConverter converter;
 
-    public HotelSearchResponseDto findRoomBy(Long id) throws HotelInfoNotFoundedException {
-        return hotelRoomRepository.findById(id)
-                .map(converter::convertHotelSearchResponseDto)
-                .orElseThrow(()->new HotelInfoNotFoundedException(ErrorMessage.HOTEL_ROOM_NOT_FOUNDED));
+    public HotelSearchResponseDto findHotelBy(Long id, HotelSearchRequestDto requestDto) throws HotelInfoNotFoundedException, EmptyHotelInfoException{
+        Hotel hotel = findHotelBy(id);
+        List<HotelRoomDto> roomsMatchedByRequest = getRoomsBy(hotel, requestDto);
+
+        if(roomsMatchedByRequest.isEmpty()){
+            throw new EmptyHotelInfoException(ErrorMessage.HOTEL_NOT_FOUNDED_MATCHED_BY_REQUEST);
+        }
+
+        return converter.convertHotelSearchResponseDto(hotel, roomsMatchedByRequest);
     }
 
-    public List<HotelSearchResponseDto> findRoomsBy(HotelSearchRequestDto requestDto){
-        List<HotelRoom> hotelRooms = findRoomsBy(requestDto.getDestinationType(), requestDto.getDestinationName());
-        hotelRooms = filterRoomsBy(hotelRooms, requestDto.getGuestNumber(), requestDto.getNumOfRoom());
+    public List<HotelSearchResponseDto> findHotelsBy(HotelSearchRequestDto requestDto) throws EmptyHotelInfoException{
+        List<HotelSearchResponseDto> hotelSearchResults = searchHotelsBy(requestDto);
 
-        return hotelRooms.stream()
-                .map(converter::convertHotelSearchResponseDto)
-                .collect(Collectors.toList());
+        if(hotelSearchResults.isEmpty()){
+            throw new EmptyHotelInfoException(ErrorMessage.HOTEL_NOT_FOUNDED_MATCHED_BY_REQUEST);
+        }
+
+        return hotelSearchResults;
     }
 
-    private List<HotelRoom> findRoomsBy(DestinationType type, String destination){
-        List<Hotel> hotels = findHotelsBy(type, destination);
-        List<HotelRoom> rooms = new ArrayList<>();
-
-        hotels.forEach(hotel -> rooms.addAll(hotel.getHotelRooms()));
-
-        return rooms;
+    private Hotel findHotelBy(Long id) throws HotelInfoNotFoundedException{
+        return hotelRepository.findById(id)
+                .orElseThrow(()->new HotelInfoNotFoundedException(ErrorMessage.HOTEL_NOT_FOUNDED));
     }
 
     private List<Hotel> findHotelsBy(DestinationType type, String destination){
@@ -68,10 +66,26 @@ public class HotelService {
         return hotels;
     }
 
-    private List<HotelRoom> filterRoomsBy(List<HotelRoom> rooms, int guestNumber, int numOfRoom){
-        return rooms.stream()
-                    .filter(room -> room.getMaxGuestNumber() >= guestNumber)
-                    .filter(room -> room.getCount() >= numOfRoom)
-                    .collect(Collectors.toList());
+    private List<HotelRoomDto> getRoomsBy(Hotel hotel, HotelSearchRequestDto requestDto){
+        return hotel.getHotelRooms()
+                .stream()
+                .filter(room -> room.getMaxGuestNumber() >= requestDto.getGuestNumber())
+                .filter(room -> room.getCount() >= requestDto.getNumOfRoom())
+                .map(converter::convertHotelRoomDto)
+                .collect(Collectors.toList());
+    }
+
+    private List<HotelSearchResponseDto> searchHotelsBy(HotelSearchRequestDto requestDto){
+        List<HotelSearchResponseDto> hotelSearchResults = new ArrayList<>();
+        List<Hotel> hotels = findHotelsBy(requestDto.getDestinationType(), requestDto.getDestinationName());
+
+        hotels.forEach(hotel -> {
+            List<HotelRoomDto> roomsMatchedByRequest = getRoomsBy(hotel, requestDto);
+            if(!roomsMatchedByRequest.isEmpty()) {
+                hotelSearchResults.add(converter.convertHotelSearchResponseDto(hotel, roomsMatchedByRequest));
+            }
+        });
+
+        return hotelSearchResults;
     }
 }

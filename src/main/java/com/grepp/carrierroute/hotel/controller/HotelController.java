@@ -2,6 +2,7 @@ package com.grepp.carrierroute.hotel.controller;
 
 import com.grepp.carrierroute.hotel.dto.HotelSearchRequestDto;
 import com.grepp.carrierroute.hotel.dto.HotelSearchResponseDto;
+import com.grepp.carrierroute.hotel.exception.EmptyHotelInfoException;
 import com.grepp.carrierroute.hotel.exception.HotelInfoNotFoundedException;
 import com.grepp.carrierroute.hotel.service.HotelService;
 import lombok.RequiredArgsConstructor;
@@ -18,12 +19,12 @@ public class HotelController {
     private final HotelService hotelService;
 
     @GetMapping("/hotels")
-    public List<HotelSearchResponseDto> getHotelRooms(@RequestBody HotelSearchRequestDto searchRequestDto){
-        return hotelService.findRoomsBy(searchRequestDto);
+    public List<HotelSearchResponseDto> getHotels(@RequestBody HotelSearchRequestDto searchRequestDto) throws EmptyHotelInfoException {
+        return hotelService.findHotelsBy(searchRequestDto);
     }
 
-    @GetMapping("/hotels/{hotelId}/rooms/{roomId}")
-    public HotelSearchResponseDto getHotelRoom(@PathVariable Long roomId) throws HotelInfoNotFoundedException {
-        return hotelService.findRoomBy(roomId);
+    @GetMapping("/hotels/{hotelId}")
+    public HotelSearchResponseDto getHotel(@PathVariable Long hotelId, @RequestBody HotelSearchRequestDto searchRequestDto) throws HotelInfoNotFoundedException, EmptyHotelInfoException {
+        return hotelService.findHotelBy(hotelId, searchRequestDto);
     }
 }
