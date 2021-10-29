@@ -3,7 +3,6 @@ package com.grepp.carrierroute.common.domain;
 import com.grepp.carrierroute.common.BaseTimeEntity;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "airport")
@@ -24,11 +23,4 @@ public class Airport extends BaseTimeEntity {
 
     }
 
-    public void setCity(City city) {
-        if(Objects.nonNull(this.city)) {
-            this.city.getAirports().remove(this);
-        }
-        this.city = city;
-        city.getAirports().add(this);
-    }
 }
