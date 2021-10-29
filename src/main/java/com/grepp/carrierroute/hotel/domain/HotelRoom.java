@@ -1,5 +1,7 @@
 package com.grepp.carrierroute.hotel.domain;
 
+import com.grepp.carrierroute.hotel.exception.ErrorMessage;
+import com.grepp.carrierroute.hotel.exception.InvalidHotelRoomParameterException;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,13 +22,13 @@ public class HotelRoom {
     private RoomType roomType;
 
     @Column(name = "count", nullable = false)
-    private Integer count;
+    private int count;
 
     @Column(name = "max_guests", nullable = false)
-    private Integer maxGuestNumber;
+    private int maxGuestNumber;
 
     @Column(name = "price_per_day", nullable = false)
-    private Long pricePerDay;
+    private long pricePerDay;
 
     @Column(name = "photo_url", length = 100)
     private String photoUrl;
@@ -37,12 +39,14 @@ public class HotelRoom {
 
     @Builder
     public HotelRoom(@NonNull RoomType roomType,
-                     @NonNull Integer count,
-                     @NonNull Integer maxGuestNumber,
-                     @NonNull Long pricePerDay,
+                     int count,
+                     int maxGuestNumber,
+                     long pricePerDay,
                      String photoUrl,
                      @NonNull Hotel hotel)
     {
+        validateHotelRoomInfo(count, maxGuestNumber, pricePerDay);
+
         this.roomType = roomType;
         this.count = count;
         this.maxGuestNumber = maxGuestNumber;
@@ -52,6 +56,12 @@ public class HotelRoom {
         this.setHotel(hotel);
     }
 
+    private void validateHotelRoomInfo(int count, int maxGuestNumber, long pricePerDay) {
+        if ((count <= 0) || (maxGuestNumber <= 0) || (pricePerDay <= 0)){
+            throw new InvalidHotelRoomParameterException(ErrorMessage.INVALID_HOTEL_ROOM_PARAMETER);
+        }
+    }
+
     private void setHotel(Hotel hotel){
         if(Objects.nonNull(this.hotel)){
             hotel.getHotelRooms().remove(this);
@@ -59,5 +69,9 @@ public class HotelRoom {
 
         this.hotel = hotel;
         hotel.getHotelRooms().add(this);
+    }
+
+    public boolean isAvailable(int guestNumber, int numOfRoom){
+        return (maxGuestNumber >= guestNumber) && (count >= numOfRoom);
     }
 }
