@@ -19,19 +19,18 @@ public class CarBookingController {
 
 
     @PostMapping("/bookings/cars")
-    public CarBookingResponseDto bookCar(CarBookingRequestDto carBookingRequestDto) {
-        return carBookingService.bookCar(carBookingRequestDto);
+    public ResponseEntity<CarBookingResponseDto> bookCar(CarBookingRequestDto carBookingRequestDto) {
+        return new ResponseEntity<>(carBookingService.bookCar(carBookingRequestDto), HttpStatus.CREATED);
     }
 
-
     @GetMapping("/bookings/cars")
-    public List<CarBookingResponseDto> getCarBookings(){
-        return carBookingService.getCarBookings();
+    public ResponseEntity<List<CarBookingResponseDto>> getCarBookings(){
+        return new ResponseEntity<>(carBookingService.getCarBookings(), HttpStatus.OK);
     }
 
     @GetMapping("/bookings/cars/{bookingId}")
-    public CarBookingResponseDto getCarBooking(@PathVariable Long bookingId) {
-        return carBookingService.getCarBooking(bookingId);
+    public ResponseEntity<CarBookingResponseDto> getCarBooking(@PathVariable Long bookingId) {
+        return new ResponseEntity<>(carBookingService.getCarBooking(bookingId), HttpStatus.OK);
     }
 
     @DeleteMapping("/bookings/cars/{bookingId}")
