@@ -22,7 +22,7 @@ public class CarService {
     private final CarConverter carConverter;
 
     public List<CarResponseDto> findAllByCondition(CarSearchDto carSearchDto) {
-        List<String> bookedCarIds = bookingCarRepository.findBookedCarIdsByDate(carSearchDto.getStartDateTime(), carSearchDto.getEndDateTime());
+        List<String> bookedCarIds = bookingCarRepository.findBookedCarIdsByDateTime(carSearchDto.getStartDateTime(), carSearchDto.getEndDateTime());
 
         return carRepository.findByPlaceAmongNotBookedCars(carSearchDto.getPlace(), bookedCarIds)
                 .stream()
