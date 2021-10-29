@@ -19,12 +19,12 @@ public class HotelController {
     private final HotelService hotelService;
 
     @GetMapping("/hotels")
-    public List<HotelSearchResponseDto> getHotels(@RequestBody HotelSearchRequestDto searchRequestDto) throws EmptyHotelInfoException {
+    public List<HotelSearchResponseDto> getHotels(@RequestBody HotelSearchRequestDto searchRequestDto){
         return hotelService.findHotelsBy(searchRequestDto);
     }
 
     @GetMapping("/hotels/{hotelId}")
-    public HotelSearchResponseDto getHotel(@PathVariable Long hotelId, @RequestBody HotelSearchRequestDto searchRequestDto) throws HotelInfoNotFoundedException, EmptyHotelInfoException {
+    public HotelSearchResponseDto getHotel(@PathVariable Long hotelId, @RequestBody HotelSearchRequestDto searchRequestDto){
         return hotelService.findHotelBy(hotelId, searchRequestDto);
     }
 }

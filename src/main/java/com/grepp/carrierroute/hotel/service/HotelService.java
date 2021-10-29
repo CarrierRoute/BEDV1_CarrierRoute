@@ -22,7 +22,7 @@ public class HotelService {
     private final HotelRepository hotelRepository;
     private final HotelConverter converter;
 
-    public HotelSearchResponseDto findHotelBy(Long id, HotelSearchRequestDto requestDto) throws HotelInfoNotFoundedException, EmptyHotelInfoException{
+    public HotelSearchResponseDto findHotelBy(Long id, HotelSearchRequestDto requestDto){
         Hotel hotel = findHotelBy(id);
         List<HotelRoomDto> roomsMatchedByRequest = getRoomsBy(hotel, requestDto);
 
@@ -33,7 +33,7 @@ public class HotelService {
         return converter.convertHotelSearchResponseDto(hotel, roomsMatchedByRequest);
     }
 
-    public List<HotelSearchResponseDto> findHotelsBy(HotelSearchRequestDto requestDto) throws EmptyHotelInfoException{
+    public List<HotelSearchResponseDto> findHotelsBy(HotelSearchRequestDto requestDto){
         List<HotelSearchResponseDto> hotelSearchResults = searchHotelsBy(requestDto);
 
         if(hotelSearchResults.isEmpty()){
@@ -69,8 +69,7 @@ public class HotelService {
     private List<HotelRoomDto> getRoomsBy(Hotel hotel, HotelSearchRequestDto requestDto){
         return hotel.getHotelRooms()
                 .stream()
-                .filter(room -> room.getMaxGuestNumber() >= requestDto.getGuestNumber())
-                .filter(room -> room.getCount() >= requestDto.getNumOfRoom())
+                .filter(room -> room.isAvailable(requestDto.getGuestNumber(), requestDto.getNumOfRoom()))
                 .map(converter::convertHotelRoomDto)
                 .collect(Collectors.toList());
     }
