@@ -4,6 +4,8 @@ import com.grepp.carrierroute.car.dto.CarResponseDto;
 import com.grepp.carrierroute.car.dto.CarSearchDto;
 import com.grepp.carrierroute.car.service.CarService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +22,7 @@ public class CarController {
     private final CarService carService;
 
     @GetMapping
-    public List<CarResponseDto> findAllByCondition(@Valid @RequestBody CarSearchDto carSearchDto) {
-        return carService.findAllByCondition(carSearchDto);
+    public ResponseEntity<List<CarResponseDto>> findAllByCondition(@Valid @RequestBody CarSearchDto carSearchDto) {
+        return new ResponseEntity<>(carService.findAllByCondition(carSearchDto), HttpStatus.OK);
     }
 }
