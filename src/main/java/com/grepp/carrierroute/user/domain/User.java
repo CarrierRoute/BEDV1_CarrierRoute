@@ -5,7 +5,6 @@ import com.grepp.carrierroute.common.BaseTimeEntity;
 import com.grepp.carrierroute.user.domain.vo.Point;
 import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Persistable;
 
@@ -60,5 +59,13 @@ public class User extends BaseTimeEntity implements Persistable<String> {
 
     public Point getPoint() {
         return point;
+    }
+
+    public void deductPoint(long totalPrice) {
+        this.point.minus(totalPrice);
+    }
+
+    public void plus(long totalPrice) {
+        this.point.plus(totalPrice);
     }
 }
