@@ -29,11 +29,15 @@ public class CarBooking {
     @Embedded
     private Period period;
 
+    @Column(nullable = false)
+    private String place;
+
     @Builder
-    public CarBooking(Long id, Car car, User user, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+    public CarBooking(Long id, Car car, User user, LocalDateTime startDateTime, LocalDateTime endDateTime, String place) {
         this.id = id;
         this.car = car;
         this.user = user;
+        this.place = place;
         this.period = new Period(startDateTime, endDateTime);
     }
 
@@ -55,5 +59,9 @@ public class CarBooking {
 
     public User getUser() {
         return user;
+    }
+
+    public String getPlace() {
+        return place;
     }
 }

@@ -14,6 +14,9 @@ public class CarBookingRequestDto {
     private String carId;
 
     @NotBlank
+    private String place;
+
+    @NotBlank
     private LocalDateTime startDateTime;
 
     @NotBlank

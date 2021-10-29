@@ -39,19 +39,28 @@ public class CarBookingService {
 
         checkBookingState(carBookingRequestDto);
 
-        long totalPrice = car.getPrice() * getBookingDuration(carBookingRequestDto.getStartDateTime(), carBookingRequestDto.getEndDateTime());
-        user.deductPoint(totalPrice);
+        pay(carBookingRequestDto, user, car);
 
-        CarBooking carBooking = CarBooking.builder()
-                .car(car)
-                .user(user)
-                .startDateTime(carBookingRequestDto.getStartDateTime())
-                .endDateTime(carBookingRequestDto.getEndDateTime())
-                .build();
+        CarBooking carBooking = createCarBooking(carBookingRequestDto, user, car);
 
         CarBooking save = carBookingRepository.save(carBooking);
 
         return carBookingConverter.convertCarBookingResponseDto(save, car);
+    }
+
+    private CarBooking createCarBooking(CarBookingRequestDto carBookingRequestDto, User user, Car car) {
+        return CarBooking.builder()
+                .car(car)
+                .user(user)
+                .place(carBookingRequestDto.getPlace())
+                .startDateTime(carBookingRequestDto.getStartDateTime())
+                .endDateTime(carBookingRequestDto.getEndDateTime())
+                .build();
+    }
+
+    private void pay(CarBookingRequestDto carBookingRequestDto, User user, Car car) {
+        long totalPrice = car.getPrice() * getBookingDuration(carBookingRequestDto.getStartDateTime(), carBookingRequestDto.getEndDateTime());
+        user.minusPoint(totalPrice);
     }
 
     private void checkBookingState(CarBookingRequestDto carBookingRequestDto) {

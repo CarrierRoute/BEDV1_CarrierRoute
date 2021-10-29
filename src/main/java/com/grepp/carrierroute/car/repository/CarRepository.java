@@ -8,7 +8,11 @@ import java.util.List;
 
 public interface CarRepository extends JpaRepository<Car, String> {
 
-    @Query("select c from Car c where c.place = :place " +
+    @Query("select c from Car c where c.airport.code = :airport " +
             "and (c.bookingState = false or c.id not in :carIds )")
-    List<Car> findByPlaceAmongNotBookedCars(@Param("place") String place, @Param("carIds") List<String> carIds);
+    List<Car> findByAirPortAmongNotBookedCars(@Param("airport") String airport, @Param("carIds") List<String> carIds);
+
+    @Query("select c from Car c where c.airport.city.name = :city " +
+            "and (c.bookingState = false or c.id not in :carIds )")
+    List<Car> findByCityAmongNotBookedCars(@Param("city") String city, @Param("carIds") List<String> carIds);
 }

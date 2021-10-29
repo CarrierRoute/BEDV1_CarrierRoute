@@ -13,11 +13,11 @@ import java.time.LocalDateTime;
 public class CarBookingResponseDto {
 
     private Long id;
-    private String carId;
+    private String carLicencePlate;
     private String image;
     private CarGrade grade;
-    private Integer price;
-    private Integer maxPassengers;
+    private int price;
+    private int maxPassengers;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
 }

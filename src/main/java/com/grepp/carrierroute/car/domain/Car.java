@@ -1,6 +1,7 @@
 package com.grepp.carrierroute.car.domain;
 
 import com.grepp.carrierroute.common.BaseTimeEntity;
+import com.grepp.carrierroute.common.domain.Airport;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -22,7 +23,11 @@ public class Car extends BaseTimeEntity implements Persistable<String> {
     public static final int MIN_PASSENGER = 1;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
+    @Column(nullable = false, unique = true)
+    private String licencePlate;
 
     private String image;
 
@@ -43,18 +48,21 @@ public class Car extends BaseTimeEntity implements Persistable<String> {
     @JoinColumn(name = "car_company_id", referencedColumnName = "id")
     private CarCompany carCompany;
 
-    @Column(nullable = false)
-    private String place;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "airport_id", referencedColumnName = "id")
+    private Airport airport;
 
     @Builder
-    public Car(String id, String image, CarGrade grade, int price, int maxPassengers, boolean bookingState, CarCompany carCompany) {
+    public Car(String id, String licencePlate, String image, CarGrade grade, int price, int maxPassengers, boolean bookingState, CarCompany carCompany, Airport airport) {
         this.id = id;
+        this.licencePlate = licencePlate;
         this.image = image;
         this.grade = grade;
         this.price = price;
         this.maxPassengers = maxPassengers;
         this.bookingState = bookingState;
         this.carCompany = carCompany;
+        this.airport = airport;
     }
 
     public CarCompany getCarCompany() {
@@ -77,6 +85,10 @@ public class Car extends BaseTimeEntity implements Persistable<String> {
         return maxPassengers;
     }
 
+    public String getLicencePlate() {
+        return licencePlate;
+    }
+
     public boolean isBookingState() {
         return bookingState;
     }
@@ -89,5 +101,9 @@ public class Car extends BaseTimeEntity implements Persistable<String> {
     @Override
     public boolean isNew() {
         return getCreatedDate() == null;
+    }
+
+    public void setAirport(Airport airport) {
+        this.airport = airport;
     }
 }
