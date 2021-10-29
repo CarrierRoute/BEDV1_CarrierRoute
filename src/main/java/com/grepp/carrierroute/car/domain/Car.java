@@ -59,8 +59,9 @@ public class Car extends BaseTimeEntity implements Persistable<String> {
         return image;
     }
 
-    public String getGrade() {
-        return grade.getGrade();
+    public CarGrade getGrade() {
+        return grade;
+
     }
 
     public int getPrice() {
@@ -85,4 +86,3 @@ public class Car extends BaseTimeEntity implements Persistable<String> {
         return getCreatedDate() == null;
     }
 }
-
