@@ -3,6 +3,7 @@ package com.grepp.carrierroute.booking.service;
 import com.grepp.carrierroute.booking.domain.CarBooking;
 import com.grepp.carrierroute.booking.exception.AlreadyBookedException;
 import com.grepp.carrierroute.booking.exception.CarBookingNotFoundException;
+import com.grepp.carrierroute.booking.exception.UserAndCarBookingNotMatchException;
 import com.grepp.carrierroute.booking.service.converter.CarBookingConverter;
 import com.grepp.carrierroute.booking.dto.CarBookingRequestDto;
 import com.grepp.carrierroute.booking.dto.CarBookingResponseDto;
