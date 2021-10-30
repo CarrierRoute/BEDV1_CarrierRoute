@@ -61,11 +61,11 @@ public class User extends BaseTimeEntity implements Persistable<String> {
         return point;
     }
 
-    public void deductPoint(long totalPrice) {
-        this.point.minus(totalPrice);
+    public void subtractPoint(long totalPrice) {
+        this.point.subtract(totalPrice);
     }
 
-    public void plus(long totalPrice) {
-        this.point.plus(totalPrice);
+    public void addPoint(long totalPrice) {
+        this.point.add(totalPrice);
     }
 }

@@ -3,7 +3,6 @@ package com.grepp.carrierroute.booking.service;
 import com.grepp.carrierroute.booking.domain.CarBooking;
 import com.grepp.carrierroute.booking.exception.AlreadyBookedException;
 import com.grepp.carrierroute.booking.exception.CarBookingNotFoundException;
-import com.grepp.carrierroute.booking.exception.UserAndCarBookingNotMatchException;
 import com.grepp.carrierroute.booking.service.converter.CarBookingConverter;
 import com.grepp.carrierroute.booking.dto.CarBookingRequestDto;
 import com.grepp.carrierroute.booking.dto.CarBookingResponseDto;
@@ -37,24 +36,32 @@ public class CarBookingService {
         User user = getUser(userId);
         Car car = getCar(carBookingRequestDto);
 
-        checkBookingState(carBookingRequestDto);
+        validateBookingState(carBookingRequestDto);
 
-        long totalPrice = car.getPrice() * getBookingDuration(carBookingRequestDto.getStartDateTime(), carBookingRequestDto.getEndDateTime());
-        user.deductPoint(totalPrice);
+        pay(carBookingRequestDto, user, car);
 
-        CarBooking carBooking = CarBooking.builder()
-                .car(car)
-                .user(user)
-                .startDateTime(carBookingRequestDto.getStartDateTime())
-                .endDateTime(carBookingRequestDto.getEndDateTime())
-                .build();
+        CarBooking carBooking = createCarBooking(carBookingRequestDto, user, car);
 
         CarBooking save = carBookingRepository.save(carBooking);
 
         return carBookingConverter.convertCarBookingResponseDto(save, car);
     }
 
-    private void checkBookingState(CarBookingRequestDto carBookingRequestDto) {
+    private CarBooking createCarBooking(CarBookingRequestDto carBookingRequestDto, User user, Car car) {
+        return CarBooking.builder()
+                .car(car)
+                .user(user)
+                .startDateTime(carBookingRequestDto.getStartDateTime())
+                .endDateTime(carBookingRequestDto.getEndDateTime())
+                .build();
+    }
+
+    private void pay(CarBookingRequestDto carBookingRequestDto, User user, Car car) {
+        long totalPrice = car.getPrice() * getBookingDuration(carBookingRequestDto.getStartDateTime(), carBookingRequestDto.getEndDateTime());
+        user.subtractPoint(totalPrice);
+    }
+
+    private void validateBookingState(CarBookingRequestDto carBookingRequestDto) {
         carBookingRepository.findByCarIdAndDateTime(carBookingRequestDto.getCarId(), carBookingRequestDto.getStartDateTime(), carBookingRequestDto.getEndDateTime())
                 .ifPresent(carBooking -> {
                     throw new AlreadyBookedException(MessageFormat.format("Already Booked Car. Car Id : {0}", carBookingRequestDto.getCarId()));
@@ -84,8 +91,6 @@ public class CarBookingService {
     public CarBookingResponseDto getCarBooking(Long bookingId, String userId) {
         CarBooking carBooking = getCarBooking(bookingId);
 
-        validUserRelatedToBooking(bookingId, userId, carBooking);
-
         String id = carBooking.getCar().getId();
         return carRepository.findById(id)
                 .map(car -> carBookingConverter.convertCarBookingResponseDto(carBooking, car))
@@ -97,23 +102,19 @@ public class CarBookingService {
                 .orElseThrow(() -> new CarBookingNotFoundException(MessageFormat.format("Not Found CarBooking. Booking Id :{0}", bookingId)));
     }
 
-    private void validUserRelatedToBooking(Long bookingId, String userId, CarBooking carBooking) {
-        if (!carBooking.getUser().getId().equals(userId)) {
-            throw new UserAndCarBookingNotMatchException(MessageFormat.format("UserId related to bookingID is not correct. User Id : {0}, Booking ID : {1}", userId, bookingId));
-        }
-    }
-
     @Transactional
     public void cancelBooking(Long bookingId, String userId) {
         CarBooking carBooking = getCarBooking(bookingId);
 
-        validUserRelatedToBooking(bookingId, userId, carBooking);
-
         User user = getUser(userId);
 
-        long totalPrice = carBooking.getCar().getPrice() * getBookingDuration(carBooking.getStartDateTime(), carBooking.getEndDateTime());
-        user.plus(totalPrice);
+        refund(carBooking, user);
 
         carBookingRepository.delete(carBooking);
+    }
+
+    private void refund(CarBooking carBooking, User user) {
+        long totalPrice = carBooking.getCar().getPrice() * getBookingDuration(carBooking.getStartDateTime(), carBooking.getEndDateTime());
+        user.addPoint(totalPrice);
     }
 }

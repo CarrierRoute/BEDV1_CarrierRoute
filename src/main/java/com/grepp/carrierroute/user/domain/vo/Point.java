@@ -11,14 +11,14 @@ public class Point {
 
     private long point;
 
-    public void minus(long totalPrice){
+    public void subtract(long totalPrice){
         if (this.point < totalPrice) {
             throw new LackOfPointException("Lack of Point. Current Point : " + this.point);
         }
         this.point -= totalPrice;
     }
 
-    public void plus(long totalPrice) {
+    public void add(long totalPrice) {
         this.point += totalPrice;
     }
 }
