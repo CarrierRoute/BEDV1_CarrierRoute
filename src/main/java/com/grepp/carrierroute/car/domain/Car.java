@@ -15,6 +15,12 @@ import javax.persistence.*;
 @EqualsAndHashCode(of = "id")
 public class Car extends BaseTimeEntity implements Persistable<String> {
 
+    public static final int MAX_PRICE = 100000;
+    public static final int MIN_PRICE = 1000;
+
+    public static final int MAX_PASSENGER = 12;
+    public static final int MIN_PASSENGER = 1;
+
     @Id
     private String id;
 
@@ -61,7 +67,6 @@ public class Car extends BaseTimeEntity implements Persistable<String> {
 
     public CarGrade getGrade() {
         return grade;
-
     }
 
     public int getPrice() {
