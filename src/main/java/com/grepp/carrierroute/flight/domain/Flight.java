@@ -1,5 +1,7 @@
 package com.grepp.carrierroute.flight.domain;
 
+import lombok.Builder;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -39,6 +41,14 @@ public class Flight {
 
     protected Flight(){
 
+    }
+    @Builder
+    public Flight(String departureCity, String arrivalCity, LocalDateTime departureDateTime, LocalDateTime arrivalDateTime, Airline airline){
+        this.departureCity = departureCity;
+        this.arrivalCity = arrivalCity;
+        this.departureDateTime = departureDateTime;
+        this.arrivalDateTime = arrivalDateTime;
+        this.airline = airline;
     }
 
     public void setAirline(Airline airline) {

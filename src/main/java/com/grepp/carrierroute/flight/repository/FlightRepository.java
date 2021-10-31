@@ -1,5 +1,6 @@
 package com.grepp.carrierroute.flight.repository;
 
+import com.grepp.carrierroute.flight.domain.Airline;
 import com.grepp.carrierroute.flight.domain.Flight;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
