@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -13,12 +14,9 @@ public class CarBookingRequestDto {
     @NotBlank
     private String carId;
 
-    @NotBlank
-    private String place;
-
-    @NotBlank
+    @NotEmpty
     private LocalDateTime startDateTime;
 
-    @NotBlank
+    @NotEmpty
     private LocalDateTime endDateTime;
 }
