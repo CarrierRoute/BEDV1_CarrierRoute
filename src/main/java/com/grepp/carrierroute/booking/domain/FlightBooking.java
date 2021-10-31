@@ -2,6 +2,8 @@ package com.grepp.carrierroute.booking.domain;
 
 import com.grepp.carrierroute.flight.domain.Airline;
 import com.grepp.carrierroute.flight.domain.Flight;
+import com.grepp.carrierroute.flight.domain.FlightCabinClass;
+import lombok.Builder;
 
 import javax.persistence.*;
 
@@ -14,11 +16,16 @@ public class FlightBooking {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "flight_id", referencedColumnName = "id")
-    private Flight flight;
+    @JoinColumn(name = "flight_cabin_class_id", referencedColumnName = "id")
+    private FlightCabinClass flightCabinClass;
 
-    protected FlightBooking(){
+    protected FlightBooking() {
 
+    }
+
+    @Builder
+    public FlightBooking(FlightCabinClass flightCabinClass) {
+        this.flightCabinClass = flightCabinClass;
     }
 
     // GETTER
@@ -26,7 +33,7 @@ public class FlightBooking {
         return id;
     }
 
-    public Flight getFlight() {
-        return flight;
+    public FlightCabinClass getFlightCabinClass() {
+        return flightCabinClass;
     }
 }
