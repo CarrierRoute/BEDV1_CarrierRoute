@@ -9,8 +9,7 @@ import lombok.Getter;
 public class HotelRoomDto {
     private Long roomId;
     private RoomType roomType;
-    private int roomCount;
-    private int maxGuestNumber;
+    private int maxNumOfGuest;
     private long pricePerDay;
     private String roomPhotoUrl;
 }

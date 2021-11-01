@@ -1,6 +1,7 @@
 package com.grepp.carrierroute.hotel.service;
 
 import com.grepp.carrierroute.hotel.domain.Hotel;
+import com.grepp.carrierroute.hotel.domain.HotelRoom;
 import com.grepp.carrierroute.hotel.dto.*;
 import com.grepp.carrierroute.hotel.exception.EmptyHotelInfoException;
 import com.grepp.carrierroute.hotel.exception.ErrorMessage;
@@ -8,29 +9,31 @@ import com.grepp.carrierroute.hotel.exception.HotelInfoNotFoundedException;
 import com.grepp.carrierroute.hotel.repository.HotelRepository;
 import com.grepp.carrierroute.hotel.service.converter.HotelConverter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class HotelService {
     private final HotelRepository hotelRepository;
+    private final HotelRoomService hotelRoomService;
     private final HotelConverter converter;
 
     public HotelSearchResponseDto findHotelBy(Long id, HotelSearchRequestDto requestDto){
         Hotel hotel = findHotelBy(id);
-        List<HotelRoomDto> roomsMatchedByRequest = getRoomsBy(hotel, requestDto);
+        List<HotelRoom> roomsMatchedByRequest = hotelRoomService.findRoomsBy(hotel, requestDto);
 
         if(roomsMatchedByRequest.isEmpty()){
             throw new EmptyHotelInfoException(ErrorMessage.HOTEL_NOT_FOUNDED_MATCHED_BY_REQUEST);
         }
 
-        return converter.convertHotelSearchResponseDto(hotel, roomsMatchedByRequest);
+        return converter.convertToHotelSearchResponseDto(hotel, roomsMatchedByRequest);
     }
 
     public List<HotelSearchResponseDto> findHotelsBy(HotelSearchRequestDto requestDto){
@@ -66,22 +69,14 @@ public class HotelService {
         return hotels;
     }
 
-    private List<HotelRoomDto> getRoomsBy(Hotel hotel, HotelSearchRequestDto requestDto){
-        return hotel.getHotelRooms()
-                .stream()
-                .filter(room -> room.isAvailable(requestDto.getGuestNumber(), requestDto.getNumOfRoom()))
-                .map(converter::convertHotelRoomDto)
-                .collect(Collectors.toList());
-    }
-
     private List<HotelSearchResponseDto> searchHotelsBy(HotelSearchRequestDto requestDto){
         List<HotelSearchResponseDto> hotelSearchResults = new ArrayList<>();
-        List<Hotel> hotels = findHotelsBy(requestDto.getDestinationType(), requestDto.getDestinationName());
 
-        hotels.forEach(hotel -> {
-            List<HotelRoomDto> roomsMatchedByRequest = getRoomsBy(hotel, requestDto);
+        findHotelsBy(requestDto.getDestinationType(), requestDto.getDestinationName()).forEach(hotel -> {
+            List<HotelRoom> roomsMatchedByRequest = hotelRoomService.findRoomsBy(hotel, requestDto);
+
             if(!roomsMatchedByRequest.isEmpty()) {
-                hotelSearchResults.add(converter.convertHotelSearchResponseDto(hotel, roomsMatchedByRequest));
+                hotelSearchResults.add(converter.convertToHotelSearchResponseDto(hotel, roomsMatchedByRequest));
             }
         });
 

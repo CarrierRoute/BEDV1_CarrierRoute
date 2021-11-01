@@ -38,10 +38,10 @@ public class Hotel {
     @Column(name = "description", length = 200)
     private String description;
 
-    @Column(name = "check_in", nullable = false)
+    @Column(name = "check_in_time", nullable = false)
     private LocalTime checkInTime;
 
-    @Column(name = "check_out", nullable = false)
+    @Column(name = "check_out_time", nullable = false)
     private LocalTime checkOutTime;
 
     @Column(name = "photo_url", length = 100)
