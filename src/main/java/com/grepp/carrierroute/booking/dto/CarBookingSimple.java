@@ -9,8 +9,9 @@ import java.time.LocalDateTime;
 @Getter
 public class CarBookingSimple {
     private Long id;
-    private String carLicencePlate;
-    private String image;
+    private String licencePlate;
+    private String uploadFileName;
+    private String storeFileName;
     private String place;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;

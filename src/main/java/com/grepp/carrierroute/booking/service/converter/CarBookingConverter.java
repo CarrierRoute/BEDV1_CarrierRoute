@@ -13,7 +13,7 @@ public class CarBookingConverter {
                 .id(carBooking.getId())
                 .carLicencePlate(car.getLicencePlate())
                 .grade(car.getGrade())
-                .image(car.getImage())
+                .image(car.getUploadFile())
                 .maxPassengers(car.getMaxPassengers())
                 .price(car.getPrice())
                 .startDateTime(carBooking.getStartDateTime())

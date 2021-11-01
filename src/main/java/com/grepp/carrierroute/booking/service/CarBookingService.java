@@ -63,7 +63,7 @@ public class CarBookingService {
     }
 
     private void validateBookingState(CarBookingRequestDto carBookingRequestDto) {
-        carBookingRepository.findByCarIdAndDateTime(carBookingRequestDto.getCarId(), carBookingRequestDto.getStartDateTime(), carBookingRequestDto.getEndDateTime())
+        carBookingRepository.findByIdAndDateTime(carBookingRequestDto.getCarId(), carBookingRequestDto.getStartDateTime(), carBookingRequestDto.getEndDateTime())
                 .ifPresent(carBooking -> {
                     throw new AlreadyBookedException(MessageFormat.format("Already Booked Car. Car Id : {0}", carBookingRequestDto.getCarId()));
                 });

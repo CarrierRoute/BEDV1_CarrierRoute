@@ -1,6 +1,7 @@
 package com.grepp.carrierroute.car.domain;
 
 import com.grepp.carrierroute.common.BaseTimeEntity;
+import com.grepp.carrierroute.common.file.UploadFile;
 import com.grepp.carrierroute.common.domain.Airport;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -29,7 +30,8 @@ public class Car extends BaseTimeEntity implements Persistable<String> {
     @Column(nullable = false, unique = true)
     private String licencePlate;
 
-    private String image;
+    @Embedded
+    private UploadFile uploadFile;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -53,10 +55,9 @@ public class Car extends BaseTimeEntity implements Persistable<String> {
     private Airport airport;
 
     @Builder
-    public Car(String id, String licencePlate, String image, CarGrade grade, int price, int maxPassengers, boolean bookingState, CarCompany carCompany, Airport airport) {
-        this.id = id;
+    public Car(UploadFile uploadFile, String licencePlate, CarGrade grade, int price, int maxPassengers, boolean bookingState, CarCompany carCompany, Airport airport) {
+        this.uploadFile = uploadFile;
         this.licencePlate = licencePlate;
-        this.image = image;
         this.grade = grade;
         this.price = price;
         this.maxPassengers = maxPassengers;
@@ -69,8 +70,8 @@ public class Car extends BaseTimeEntity implements Persistable<String> {
         return carCompany;
     }
 
-    public String getImage() {
-        return image;
+    public UploadFile getUploadFile() {
+        return uploadFile;
     }
 
     public CarGrade getGrade() {
@@ -89,7 +90,7 @@ public class Car extends BaseTimeEntity implements Persistable<String> {
         return licencePlate;
     }
 
-    public boolean isBookingState() {
+    public boolean isBooked() {
         return bookingState;
     }
 
@@ -105,5 +106,9 @@ public class Car extends BaseTimeEntity implements Persistable<String> {
 
     public void setAirport(Airport airport) {
         this.airport = airport;
+    }
+
+    public Airport getAirport() {
+        return airport;
     }
 }

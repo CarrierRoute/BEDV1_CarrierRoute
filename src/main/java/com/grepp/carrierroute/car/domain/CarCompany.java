@@ -5,9 +5,9 @@ import com.grepp.carrierroute.common.BaseTimeEntity;
 import com.grepp.carrierroute.common.CancelPolicy;
 import com.grepp.carrierroute.common.RefundPolicy;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 
@@ -15,10 +15,14 @@ import javax.persistence.*;
 @Table(name = "car_company")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id")
-public class CarCompany extends BaseTimeEntity implements Persistable<String> {
+public class CarCompany extends BaseTimeEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
+    @Column(nullable = false)
+    private String name;
 
     @Embedded
     private Address address;
@@ -33,6 +37,23 @@ public class CarCompany extends BaseTimeEntity implements Persistable<String> {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RefundPolicy refundPolicy;
+
+    @Builder
+    public CarCompany(String name, Address address, String telephone, CancelPolicy cancelPolicy, RefundPolicy refundPolicy) {
+        this.name = name;
+        this.address = address;
+        this.telephone = telephone;
+        this.cancelPolicy = cancelPolicy;
+        this.refundPolicy = refundPolicy;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
 
     public Address getAddress() {
         return address;
@@ -50,13 +71,4 @@ public class CarCompany extends BaseTimeEntity implements Persistable<String> {
         return refundPolicy;
     }
 
-    @Override
-    public String getId() {
-        return null;
-    }
-
-    @Override
-    public boolean isNew() {
-        return false;
-    }
 }
