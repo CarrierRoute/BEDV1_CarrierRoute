@@ -31,7 +31,7 @@ public class HotelBookingService {
     private final HotelBookingConverter converter;
 
     public HotelBookingResponseDto bookRooms(HotelBookingRequestDto bookingRequestDto, String userId){
-        User user = findUserBy(userId);
+        User user = getUser(userId);
         List<HotelRoom> roomsToBook = getAvailableRooms(bookingRequestDto);
         long totalPrice = calculateTotalPrice(roomsToBook, bookingRequestDto.getCheckInDate(), bookingRequestDto.getCheckOutDate());
 
@@ -40,7 +40,7 @@ public class HotelBookingService {
         return converter.convertToHotelBookingResponseDto(totalPrice, bookings, bookingRequestDto);
     }
 
-    private User findUserBy(String userId){
+    private User getUser(String userId){
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUNDED.getMessage()));
     }

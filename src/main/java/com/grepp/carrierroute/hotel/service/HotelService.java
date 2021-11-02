@@ -9,7 +9,6 @@ import com.grepp.carrierroute.hotel.exception.EmptyHotelInfoException;
 import com.grepp.carrierroute.hotel.exception.ErrorMessage;
 import com.grepp.carrierroute.hotel.exception.HotelInfoNotFoundedException;
 import com.grepp.carrierroute.hotel.repository.HotelRepository;
-import com.grepp.carrierroute.hotel.repository.HotelRoomRepository;
 import com.grepp.carrierroute.hotel.service.converter.HotelConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
