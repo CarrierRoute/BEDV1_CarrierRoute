@@ -11,6 +11,9 @@ public class Airline extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "name", nullable = false)
+    private String name;
+
     @Column(name = "is_cancellation_allowed", nullable = false)
     private boolean isCancellationAllowed;
 
@@ -33,5 +36,9 @@ public class Airline extends BaseTimeEntity {
 
     public int getRefundPercentage() {
         return refundPercentage;
+    }
+
+    public String getName() {
+        return name;
     }
 }
