@@ -1,10 +1,12 @@
 package com.grepp.carrierroute.hotel.dto;
 
+import com.grepp.carrierroute.hotel.domain.RoomType;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Builder
@@ -20,5 +22,5 @@ public class HotelSearchResponseDto {
     private LocalTime checkInTime;
     private LocalTime checkOutTime;
     private String hotelPhotoUrl;
-    private List<HotelRoomDto> rooms;
+    private Map<RoomType, List<HotelRoomDto>> roomsByType;
 }

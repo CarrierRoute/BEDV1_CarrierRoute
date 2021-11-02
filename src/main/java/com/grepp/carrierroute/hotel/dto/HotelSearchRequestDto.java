@@ -12,9 +12,9 @@ import java.time.LocalDate;
 public class HotelSearchRequestDto {
     private DestinationType destinationType;
     private String destinationName;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private int guestNumber;
+    private LocalDate checkInDate;
+    private LocalDate checkOutDate;
+    private int numOfGuest;
     private int numOfRoom;
 
     @Builder
@@ -22,22 +22,22 @@ public class HotelSearchRequestDto {
                                  @NonNull String destinationName,
                                  @NonNull LocalDate startDate,
                                  @NonNull LocalDate endDate,
-                                 int guestNumber,
+                                 int numOfGuest,
                                  int numOfRoom)
     {
-        validateSearchRequestInfo(guestNumber, numOfRoom, startDate, endDate);
+        if(!isValid(numOfGuest, numOfRoom, startDate, endDate)){
+            throw new InvalidHotelSearchParameterException(ErrorMessage.INVALID_HOTEL_SEARCH_PARAMTER);
+        }
 
         this.destinationType = destinationType;
         this.destinationName = destinationName;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.guestNumber = guestNumber;
+        this.checkInDate = startDate;
+        this.checkOutDate = endDate;
+        this.numOfGuest = numOfGuest;
         this.numOfRoom = numOfRoom;
     }
 
-    private void validateSearchRequestInfo(int guestNumber, int numOfRoom, LocalDate startDate, LocalDate endDate){
-        if( (guestNumber <= 0) || (numOfRoom <= 0) || !endDate.isAfter(startDate) ){
-            throw new InvalidHotelSearchParameterException(ErrorMessage.INVALID_HOTEL_SEARCH_PARAMTER);
-        }
+    private boolean isValid(int guestNumber, int numOfRoom, LocalDate startDate, LocalDate endDate){
+        return (guestNumber > 0) && (numOfRoom > 0) && (endDate.isAfter(startDate));
     }
 }

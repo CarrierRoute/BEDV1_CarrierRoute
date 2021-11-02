@@ -1,5 +1,6 @@
 package com.grepp.carrierroute.hotel.domain;
 
+import com.grepp.carrierroute.common.BaseTimeEntity;
 import com.grepp.carrierroute.hotel.exception.ErrorMessage;
 import com.grepp.carrierroute.hotel.exception.InvalidHotelRoomParameterException;
 import lombok.*;
@@ -10,9 +11,9 @@ import java.util.Objects;
 @Entity
 @Table(name = "hotel_room")
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id")
-public class HotelRoom {
+public class HotelRoom extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
@@ -21,11 +22,8 @@ public class HotelRoom {
     @Enumerated(EnumType.STRING)
     private RoomType roomType;
 
-    @Column(name = "count", nullable = false)
-    private int count;
-
     @Column(name = "max_guests", nullable = false)
-    private int maxGuestNumber;
+    private int maxNumOfGuest;
 
     @Column(name = "price_per_day", nullable = false)
     private long pricePerDay;
@@ -39,27 +37,25 @@ public class HotelRoom {
 
     @Builder
     public HotelRoom(@NonNull RoomType roomType,
-                     int count,
-                     int maxGuestNumber,
+                     int maxNumOfGuest,
                      long pricePerDay,
                      String photoUrl,
                      @NonNull Hotel hotel)
     {
-        validateHotelRoomInfo(count, maxGuestNumber, pricePerDay);
+        if(!isValid(maxNumOfGuest, pricePerDay)){
+            throw new InvalidHotelRoomParameterException(ErrorMessage.INVALID_HOTEL_ROOM_PARAMETER);
+        }
 
         this.roomType = roomType;
-        this.count = count;
-        this.maxGuestNumber = maxGuestNumber;
+        this.maxNumOfGuest = maxNumOfGuest;
         this.pricePerDay = pricePerDay;
         this.photoUrl = photoUrl;
 
         this.setHotel(hotel);
     }
 
-    private void validateHotelRoomInfo(int count, int maxGuestNumber, long pricePerDay) {
-        if ((count <= 0) || (maxGuestNumber <= 0) || (pricePerDay <= 0)){
-            throw new InvalidHotelRoomParameterException(ErrorMessage.INVALID_HOTEL_ROOM_PARAMETER);
-        }
+    private boolean isValid(int maxGuestNumber, long pricePerDay) {
+        return (maxGuestNumber > 0) && (pricePerDay > 0);
     }
 
     private void setHotel(Hotel hotel){
@@ -69,9 +65,5 @@ public class HotelRoom {
 
         this.hotel = hotel;
         hotel.getHotelRooms().add(this);
-    }
-
-    public boolean isAvailable(int guestNumber, int numOfRoom){
-        return (maxGuestNumber >= guestNumber) && (count >= numOfRoom);
     }
 }
