@@ -1,6 +1,7 @@
 package com.grepp.carrierroute.user.domain.vo;
 
 import com.grepp.carrierroute.booking.exception.LackOfPointException;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Embeddable;
 
 @Embeddable
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Point {
 

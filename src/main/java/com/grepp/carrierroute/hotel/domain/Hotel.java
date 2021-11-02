@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "hotel")
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id")
 public class Hotel extends BaseTimeEntity {
     @Id

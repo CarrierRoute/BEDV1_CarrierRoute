@@ -5,10 +5,7 @@ import com.grepp.carrierroute.hotel.domain.HotelRoom;
 import com.grepp.carrierroute.hotel.exception.ErrorMessage;
 import com.grepp.carrierroute.booking.exception.InvalidHotelBookingParameterException;
 import com.grepp.carrierroute.user.domain.User;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -16,7 +13,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "hotel_booking")
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class HotelBooking extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
