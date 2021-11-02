@@ -1,8 +1,10 @@
 package com.grepp.carrierroute.booking.service;
 
 import com.grepp.carrierroute.booking.domain.HotelBooking;
+import com.grepp.carrierroute.booking.dto.HotelBookingDetailsDto;
 import com.grepp.carrierroute.booking.dto.HotelBookingRequestDto;
 import com.grepp.carrierroute.booking.dto.HotelBookingResponseDto;
+import com.grepp.carrierroute.booking.exception.HotelBookingNotFoundException;
 import com.grepp.carrierroute.booking.exception.InsufficentRoomException;
 import com.grepp.carrierroute.booking.repository.HotelBookingRepository;
 import com.grepp.carrierroute.booking.service.converter.HotelBookingConverter;
@@ -71,8 +73,13 @@ public class HotelBookingService {
         payPoints(user, totalPrice);
 
         return roomsToBook.stream()
-                .map(room -> hotelBookingRepository.save(converter.convertHotelBooking(user, room, bookingRequestDto)))
+                .map(room -> bookRoom(user, room, bookingRequestDto))
                 .collect(Collectors.toList());
+    }
+
+    private HotelBooking bookRoom(User user, HotelRoom roomToBook, HotelBookingRequestDto bookingRequestDto){
+        long price = calculatePrice(roomToBook, bookingRequestDto.getCheckInDate(), bookingRequestDto.getCheckOutDate());
+        return hotelBookingRepository.save(converter.convertToHotelBooking(user, roomToBook, price, bookingRequestDto));
     }
 
     private void payPoints(User user, long totalPrice){
@@ -84,5 +91,9 @@ public class HotelBookingService {
                 .mapToLong(room -> room.getPricePerDay() * ChronoUnit.DAYS.between(checkInDate, checkOutDate))
                 .sum();
 
+    }
+
+    private long calculatePrice(HotelRoom room, LocalDate checkInDate, LocalDate checkOutDate){
+        return room.getPricePerDay() * ChronoUnit.DAYS.between(checkInDate, checkOutDate);
     }
 }

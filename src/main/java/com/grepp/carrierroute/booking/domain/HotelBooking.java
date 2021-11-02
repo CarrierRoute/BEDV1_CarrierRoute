@@ -30,6 +30,9 @@ public class HotelBooking extends BaseTimeEntity {
     @Column(name = "guest_number", nullable = false)
     private int guestNumber;
 
+    @Column(name = "price", nullable = false)
+    private long price;
+
     @Column(name = "check_in_date", nullable = false)
     private LocalDate checkInDate;
 
@@ -43,23 +46,25 @@ public class HotelBooking extends BaseTimeEntity {
     public HotelBooking(@NonNull User user,
                         @NonNull HotelRoom hotelRoom,
                         int guestNumber,
+                        long price,
                         @NonNull LocalDate checkInDate,
                         @NonNull LocalDate checkOutDate,
                         String additionalRequest) {
 
-        if(!isValid(guestNumber)){
+        if(!isValid(guestNumber, price)){
             throw new InvalidHotelBookingParameterException(ErrorMessage.INVALID_HOTEL_BOOKING_PARAMTER);
         }
 
         this.user = user;
         this.hotelRoom = hotelRoom;
+        this.price = price;
         this.guestNumber = guestNumber;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
         this.additionalRequest = additionalRequest;
     }
 
-    private boolean isValid(int guestNumber){
-        return (guestNumber > 0);
+    private boolean isValid(int guestNumber, long price){
+        return (guestNumber > 0) && (price > 0);
     }
 }
