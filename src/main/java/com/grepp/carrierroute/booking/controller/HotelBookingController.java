@@ -7,6 +7,8 @@ import com.grepp.carrierroute.booking.service.HotelBookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class HotelBookingController {
@@ -15,6 +17,11 @@ public class HotelBookingController {
     @PostMapping("/bookings/hotels")
     public HotelBookingResponseDto bookRooms(@RequestBody HotelBookingRequestDto bookingRequestDto, @CookieValue(value = "userId") String userId){
         return hotelBookingService.bookRooms(bookingRequestDto, userId);
+    }
+
+    @GetMapping("/bookings/hotels")
+    public List<HotelBookingDetailsDto> getHotelBookings(@CookieValue(value = "userId") String userId){
+        return hotelBookingService.getHotelBookings(userId);
     }
 
     @GetMapping("/bookings/hotels/{bookingId}")
