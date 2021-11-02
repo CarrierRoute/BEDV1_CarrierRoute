@@ -2,8 +2,6 @@ package com.grepp.carrierroute.hotel.controller;
 
 import com.grepp.carrierroute.hotel.dto.HotelSearchRequestDto;
 import com.grepp.carrierroute.hotel.dto.HotelSearchResponseDto;
-import com.grepp.carrierroute.hotel.exception.EmptyHotelInfoException;
-import com.grepp.carrierroute.hotel.exception.HotelInfoNotFoundedException;
 import com.grepp.carrierroute.hotel.service.HotelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,11 +18,11 @@ public class HotelController {
 
     @GetMapping("/hotels")
     public List<HotelSearchResponseDto> getHotels(@RequestBody HotelSearchRequestDto searchRequestDto){
-        return hotelService.findHotelsBy(searchRequestDto);
+        return hotelService.getHotels(searchRequestDto);
     }
 
     @GetMapping("/hotels/{hotelId}")
     public HotelSearchResponseDto getHotel(@PathVariable Long hotelId, @RequestBody HotelSearchRequestDto searchRequestDto){
-        return hotelService.findHotelBy(hotelId, searchRequestDto);
+        return hotelService.getHotel(hotelId, searchRequestDto);
     }
 }

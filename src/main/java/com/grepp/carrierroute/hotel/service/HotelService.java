@@ -28,9 +28,9 @@ public class HotelService {
     private final HotelBookingRepository hotelBookingRepository;
     private final HotelConverter converter;
 
-    public HotelSearchResponseDto findHotelBy(Long id, HotelSearchRequestDto requestDto){
-        Hotel hotel = findHotelBy(id);
-        List<HotelRoom> roomsMatchedByRequest = findRoomsBy(hotel, requestDto);
+    public HotelSearchResponseDto getHotel(Long id, HotelSearchRequestDto requestDto){
+        Hotel hotel = findHotelById(id);
+        List<HotelRoom> roomsMatchedByRequest = findRoomsByHotelAndRequest(hotel, requestDto);
 
         if(roomsMatchedByRequest.isEmpty()){
             throw new EmptyHotelInfoException(ErrorMessage.HOTEL_NOT_FOUNDED_MATCHED_BY_REQUEST);
@@ -39,8 +39,8 @@ public class HotelService {
         return converter.convertToHotelSearchResponseDto(hotel, roomsMatchedByRequest);
     }
 
-    public List<HotelSearchResponseDto> findHotelsBy(HotelSearchRequestDto requestDto){
-        List<HotelSearchResponseDto> hotelSearchResults = searchHotelsBy(requestDto);
+    public List<HotelSearchResponseDto> getHotels(HotelSearchRequestDto requestDto){
+        List<HotelSearchResponseDto> hotelSearchResults = findHotelsByRequest(requestDto);
 
         if(hotelSearchResults.isEmpty()){
             throw new EmptyHotelInfoException(ErrorMessage.HOTEL_NOT_FOUNDED_MATCHED_BY_REQUEST);
@@ -49,12 +49,12 @@ public class HotelService {
         return hotelSearchResults;
     }
 
-    private Hotel findHotelBy(Long id) throws HotelInfoNotFoundedException{
+    private Hotel findHotelById(Long id) throws HotelInfoNotFoundedException{
         return hotelRepository.findById(id)
                 .orElseThrow(()->new HotelInfoNotFoundedException(ErrorMessage.HOTEL_NOT_FOUNDED));
     }
 
-    private List<Hotel> findHotelsBy(DestinationType type, String destination){
+    private List<Hotel> findHotelsByDestination(DestinationType type, String destination){
         List<Hotel> hotels = new ArrayList<>();
 
         switch (type){
@@ -72,11 +72,11 @@ public class HotelService {
         return hotels;
     }
 
-    private List<HotelSearchResponseDto> searchHotelsBy(HotelSearchRequestDto requestDto){
+    private List<HotelSearchResponseDto> findHotelsByRequest(HotelSearchRequestDto requestDto){
         List<HotelSearchResponseDto> hotelSearchResults = new ArrayList<>();
 
-        findHotelsBy(requestDto.getDestinationType(), requestDto.getDestinationName()).forEach(hotel -> {
-            List<HotelRoom> roomsMatchedByRequest = findRoomsBy(hotel, requestDto);
+        findHotelsByDestination(requestDto.getDestinationType(), requestDto.getDestinationName()).forEach(hotel -> {
+            List<HotelRoom> roomsMatchedByRequest = findRoomsByHotelAndRequest(hotel, requestDto);
 
             if(!roomsMatchedByRequest.isEmpty()) {
                 hotelSearchResults.add(converter.convertToHotelSearchResponseDto(hotel, roomsMatchedByRequest));
@@ -86,7 +86,7 @@ public class HotelService {
         return hotelSearchResults;
     }
 
-    private List<HotelRoom> findRoomsBy(Hotel hotel, HotelSearchRequestDto requestDto){
+    private List<HotelRoom> findRoomsByHotelAndRequest(Hotel hotel, HotelSearchRequestDto requestDto){
         Map<RoomType, List<HotelRoom>> availableRoomsByType = hotel.getHotelRooms()
                 .stream()
                 .filter(room -> !isRoomBooked(room.getId(), requestDto.getCheckInDate(), requestDto.getCheckOutDate()))
