@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDate;
 
 public interface HotelBookingRepository extends JpaRepository<HotelBooking, Long> {
-    @Query("SELECT CASE WHEN COUNT(hb)>0 THEN TRUE ELSE FALSE END FROM HotelBooking hb WHERE (hb.hotelRoom.id = :roomId) AND ((:checkInDate > hb.checkInDate AND :checkInDate < hb.checkOutDate) OR (:checkOutDate > hb.checkInDate AND :checkOutDate < hb.checkOutDate))")
+    @Query("SELECT CASE WHEN COUNT(hb)>0 THEN TRUE ELSE FALSE END FROM HotelBooking hb WHERE (hb.hotelRoom.id = :roomId) AND ((:checkInDate <= hb.checkOutDate) AND (hb.checkInDate <= :checkOutDate))")
     boolean existsByHotelRoomAndDate(@Param("roomId") Long roomId, @Param("checkInDate") LocalDate checkInDate, @Param("checkOutDate") LocalDate checkOutDate);
 }
