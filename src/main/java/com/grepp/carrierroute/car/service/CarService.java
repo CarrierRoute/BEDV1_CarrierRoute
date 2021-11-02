@@ -36,21 +36,10 @@ public class CarService {
     public List<CarResponseDto> findAllByCondition(CarSearchDto carSearchDto) {
         List<Long> bookedCarIds = bookingCarRepository.findBookedCarIdsByDateTime(carSearchDto.getStartDateTime(), carSearchDto.getEndDateTime());
 
-        if (carSearchDto.getSearchType() == CarSearchType.AIRPORT) {
-            return carRepository.findByAirPortAmongNotBookedCars(carSearchDto.getSearchName(), bookedCarIds)
-                    .stream()
-                    .map(carConverter::convertCarResponseDto)
-                    .collect(Collectors.toList());
-        }
-
-        if (carSearchDto.getSearchType() == CarSearchType.CITY) {
-            return carRepository.findByCityAmongNotBookedCars(carSearchDto.getSearchName(), bookedCarIds)
-                    .stream()
-                    .map(carConverter::convertCarResponseDto)
-                    .collect(Collectors.toList());
-        }
-
-        throw new RuntimeException("SearchType is wrong");
+        return carSearchDto.getSearchType().get(carRepository, bookedCarIds, carSearchDto)
+                .stream()
+                .map(carConverter::convertCarResponseDto)
+                .collect(Collectors.toList());
     }
 
     public CarResponseDto saveCar(CarCreationDto carCreationDto, MultipartFile multipartFile) {
