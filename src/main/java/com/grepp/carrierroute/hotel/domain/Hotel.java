@@ -1,5 +1,6 @@
 package com.grepp.carrierroute.hotel.domain;
 
+import com.grepp.carrierroute.common.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,7 +13,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Hotel {
+public class Hotel extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;

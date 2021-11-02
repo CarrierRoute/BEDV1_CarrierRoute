@@ -1,5 +1,6 @@
 package com.grepp.carrierroute.hotel.domain;
 
+import com.grepp.carrierroute.common.BaseTimeEntity;
 import com.grepp.carrierroute.hotel.exception.ErrorMessage;
 import com.grepp.carrierroute.hotel.exception.InvalidHotelRoomParameterException;
 import lombok.*;
@@ -12,7 +13,7 @@ import java.util.Objects;
 @Getter
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class HotelRoom {
+public class HotelRoom extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;

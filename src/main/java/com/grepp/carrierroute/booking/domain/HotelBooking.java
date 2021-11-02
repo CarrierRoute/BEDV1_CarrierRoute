@@ -1,5 +1,6 @@
 package com.grepp.carrierroute.booking.domain;
 
+import com.grepp.carrierroute.common.BaseTimeEntity;
 import com.grepp.carrierroute.hotel.domain.HotelRoom;
 import com.grepp.carrierroute.hotel.exception.ErrorMessage;
 import com.grepp.carrierroute.booking.exception.InvalidHotelBookingParameterException;
@@ -16,7 +17,7 @@ import java.time.LocalDate;
 @Table(name = "hotel_booking")
 @Getter
 @NoArgsConstructor
-public class HotelBooking {
+public class HotelBooking extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
