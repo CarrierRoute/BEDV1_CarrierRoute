@@ -9,7 +9,7 @@ import lombok.Getter;
 @Builder
 public class CarResponseDto {
 
-    private final String id;
+    private final Long id;
     private UploadFile image;
     private CarGrade grade;
     private int price;

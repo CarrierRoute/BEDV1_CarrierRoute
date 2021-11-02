@@ -3,7 +3,6 @@ package com.grepp.carrierroute.booking.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
@@ -11,8 +10,8 @@ import java.time.LocalDateTime;
 @Getter
 public class CarBookingRequestDto {
 
-    @NotBlank
-    private String carId;
+    @NotEmpty
+    private Long carId;
 
     @NotEmpty
     private LocalDateTime startDateTime;

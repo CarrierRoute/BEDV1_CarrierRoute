@@ -6,7 +6,6 @@ import com.grepp.carrierroute.booking.service.CarBookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,8 +29,8 @@ public class CarBookingController {
     }
 
     @GetMapping("/bookings/cars/{bookingId}")
-    public ResponseEntity<CarBookingResponseDto> getCarBooking(@PathVariable Long bookingId, @CookieValue(value = "userId") String userId) {
-        return new ResponseEntity<>(carBookingService.getCarBooking(bookingId, userId), HttpStatus.OK);
+    public ResponseEntity<CarBookingResponseDto> getCarBooking(@PathVariable Long bookingId) {
+        return new ResponseEntity<>(carBookingService.getCarBookingDetail(bookingId), HttpStatus.OK);
     }
 
     @DeleteMapping("/bookings/cars/{bookingId}")

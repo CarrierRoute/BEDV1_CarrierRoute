@@ -3,7 +3,6 @@ package com.grepp.carrierroute.booking.service;
 import com.grepp.carrierroute.booking.domain.CarBooking;
 import com.grepp.carrierroute.booking.exception.AlreadyBookedException;
 import com.grepp.carrierroute.booking.exception.CarBookingNotFoundException;
-import com.grepp.carrierroute.booking.exception.UserAndCarBookingNotMatchException;
 import com.grepp.carrierroute.booking.service.converter.CarBookingConverter;
 import com.grepp.carrierroute.booking.dto.CarBookingRequestDto;
 import com.grepp.carrierroute.booking.dto.CarBookingResponseDto;
@@ -89,10 +88,10 @@ public class CarBookingService {
     }
 
     @Transactional(readOnly = true)
-    public CarBookingResponseDto getCarBooking(Long bookingId, String userId) {
+    public CarBookingResponseDto getCarBookingDetail(Long bookingId) {
         CarBooking carBooking = getCarBooking(bookingId);
 
-        String id = carBooking.getCar().getId();
+        Long id = carBooking.getCar().getId();
         return carRepository.findById(id)
                 .map(car -> carBookingConverter.convertCarBookingResponseDto(carBooking, car))
                 .orElseThrow(() -> new RuntimeException("Not Found Car. Car Id : " + id));

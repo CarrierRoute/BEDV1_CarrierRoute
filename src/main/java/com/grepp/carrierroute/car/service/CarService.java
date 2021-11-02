@@ -34,7 +34,7 @@ public class CarService {
 
     @Transactional(readOnly = true)
     public List<CarResponseDto> findAllByCondition(CarSearchDto carSearchDto) {
-        List<String> bookedCarIds = bookingCarRepository.findBookedCarIdsByDateTime(carSearchDto.getStartDateTime(), carSearchDto.getEndDateTime());
+        List<Long> bookedCarIds = bookingCarRepository.findBookedCarIdsByDateTime(carSearchDto.getStartDateTime(), carSearchDto.getEndDateTime());
 
         if (carSearchDto.getSearchType() == CarSearchType.AIRPORT) {
             return carRepository.findByAirPortAmongNotBookedCars(carSearchDto.getSearchName(), bookedCarIds)
@@ -56,18 +56,18 @@ public class CarService {
     public CarResponseDto saveCar(CarCreationDto carCreationDto, MultipartFile multipartFile) {
         UploadFile uploadFile = fileStore.storeFile(multipartFile);
         CarCompany carCompany = getCarCompany(carCreationDto);
-        Car car = createCar(uploadFile, carCompany);
+        Car car = createCar(carCreationDto, uploadFile, carCompany);
 
         return carConverter.convertCarResponseDto(car);
     }
 
-    private Car createCar(UploadFile uploadFile, CarCompany carCompany) {
+    private Car createCar(CarCreationDto carCreationDto, UploadFile uploadFile, CarCompany carCompany) {
         return Car.builder()
                 .uploadFile(uploadFile)
-                .grade(CarGrade.MINI)
-                .licencePlate("12가 4567")
-                .price(10000)
-                .maxPassengers(4)
+                .grade(carCreationDto.getGrade())
+                .licencePlate(carCreationDto.getLicencePlate())
+                .price(carCreationDto.getPrice())
+                .maxPassengers(carCreationDto.getMaxPassengers())
                 .carCompany(carCompany)
                 .build();
     }

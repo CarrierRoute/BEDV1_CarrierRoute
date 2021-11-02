@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Table(name = "car")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id")
-public class Car extends BaseTimeEntity implements Persistable<String> {
+public class Car extends BaseTimeEntity {
 
     public static final int MAX_PRICE = 100000;
     public static final int MIN_PRICE = 1000;
@@ -25,7 +25,7 @@ public class Car extends BaseTimeEntity implements Persistable<String> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @Column(nullable = false, unique = true)
     private String licencePlate;
@@ -66,6 +66,10 @@ public class Car extends BaseTimeEntity implements Persistable<String> {
         this.airport = airport;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public CarCompany getCarCompany() {
         return carCompany;
     }
@@ -92,16 +96,6 @@ public class Car extends BaseTimeEntity implements Persistable<String> {
 
     public boolean isBooked() {
         return bookingState;
-    }
-
-    @Override
-    public String getId() {
-        return id;
-    }
-
-    @Override
-    public boolean isNew() {
-        return getCreatedDate() == null;
     }
 
     public void setAirport(Airport airport) {

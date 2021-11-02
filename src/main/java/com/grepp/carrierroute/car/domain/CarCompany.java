@@ -19,7 +19,7 @@ public class CarCompany extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @Column(nullable = false)
     private String name;
@@ -47,7 +47,7 @@ public class CarCompany extends BaseTimeEntity {
         this.refundPolicy = refundPolicy;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
