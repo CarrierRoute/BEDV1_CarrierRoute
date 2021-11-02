@@ -19,6 +19,11 @@ spring:
       hibernate.format_sql: true
     database-platform: org.hibernate.dialect.H2Dialect
 
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 500MB
+
 server:
   servlet:
     encoding:
@@ -26,3 +31,5 @@ server:
       enabled: true
       force: true
 
+file:
+  dir: /Users/

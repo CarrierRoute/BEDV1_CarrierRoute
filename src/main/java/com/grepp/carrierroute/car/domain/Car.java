@@ -1,6 +1,8 @@
 package com.grepp.carrierroute.car.domain;
 
 import com.grepp.carrierroute.common.BaseTimeEntity;
+import com.grepp.carrierroute.common.file.UploadFile;
+import com.grepp.carrierroute.common.domain.Airport;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -13,7 +15,13 @@ import javax.persistence.*;
 @Table(name = "car")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id")
-public class Car extends BaseTimeEntity implements Persistable<String> {
+public class Car extends BaseTimeEntity {
+
+    public static final int MAX_PRICE = 100000;
+    public static final int MIN_PRICE = 1000;
+
+    public static final int MAX_PASSENGER = 12;
+    public static final int MIN_PASSENGER = 1;
 
     public static final int MAX_PRICE = 100000;
     public static final int MIN_PRICE = 1000;
@@ -22,9 +30,14 @@ public class Car extends BaseTimeEntity implements Persistable<String> {
     public static final int MIN_PASSENGER = 1;
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private String image;
+    @Column(nullable = false, unique = true)
+    private String licencePlate;
+
+    @Embedded
+    private UploadFile uploadFile;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -43,26 +56,32 @@ public class Car extends BaseTimeEntity implements Persistable<String> {
     @JoinColumn(name = "car_company_id", referencedColumnName = "id")
     private CarCompany carCompany;
 
-    @Column(nullable = false)
-    private String place;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "airport_id", referencedColumnName = "id")
+    private Airport airport;
 
     @Builder
-    public Car(String id, String image, CarGrade grade, int price, int maxPassengers, boolean bookingState, CarCompany carCompany) {
-        this.id = id;
-        this.image = image;
+    public Car(UploadFile uploadFile, String licencePlate, CarGrade grade, int price, int maxPassengers, boolean bookingState, CarCompany carCompany, Airport airport) {
+        this.uploadFile = uploadFile;
+        this.licencePlate = licencePlate;
         this.grade = grade;
         this.price = price;
         this.maxPassengers = maxPassengers;
         this.bookingState = bookingState;
         this.carCompany = carCompany;
+        this.airport = airport;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public CarCompany getCarCompany() {
         return carCompany;
     }
 
-    public String getImage() {
-        return image;
+    public UploadFile getUploadFile() {
+        return uploadFile;
     }
 
     public CarGrade getGrade() {
@@ -77,17 +96,19 @@ public class Car extends BaseTimeEntity implements Persistable<String> {
         return maxPassengers;
     }
 
-    public boolean isBookingState() {
+    public String getLicencePlate() {
+        return licencePlate;
+    }
+
+    public boolean isBooked() {
         return bookingState;
     }
 
-    @Override
-    public String getId() {
-        return id;
+    public void setAirport(Airport airport) {
+        this.airport = airport;
     }
 
-    @Override
-    public boolean isNew() {
-        return getCreatedDate() == null;
+    public Airport getAirport() {
+        return airport;
     }
 }

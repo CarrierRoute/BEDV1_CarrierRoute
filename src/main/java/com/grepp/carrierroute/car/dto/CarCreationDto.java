@@ -1,18 +1,15 @@
 package com.grepp.carrierroute.car.dto;
 
 import com.grepp.carrierroute.car.domain.CarGrade;
-import com.grepp.carrierroute.common.file.UploadFile;
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
-public class CarResponseDto {
+public class CarCreationDto {
 
-    private final Long id;
-    private UploadFile image;
+    private String licencePlate;
     private CarGrade grade;
     private int price;
     private int maxPassengers;
-
+    private Long carCompanyId;
+    private Long airportId;
 }
