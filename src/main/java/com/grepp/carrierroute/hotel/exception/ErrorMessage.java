@@ -1,6 +1,7 @@
 package com.grepp.carrierroute.hotel.exception;
 
 public enum ErrorMessage {
+    USER_NOT_FOUNDED("사용자 정보가 없습니다."),
     HOTEL_NOT_FOUNDED("호텔 정보가 없습니다."),
     HOTEL_ROOM_NOT_FOUNDED("호텔 방 정보가 없습니다."),
     HOTEL_NOT_FOUNDED_MATCHED_BY_REQUEST("조건에 해당하는 호텔 정보가 없습니다."),
