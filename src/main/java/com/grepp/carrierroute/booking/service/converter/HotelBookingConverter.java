@@ -21,7 +21,7 @@ public class HotelBookingConverter {
                 .checkOutDate(requestDto.getCheckOutDate())
                 .totalPrice(totalPrice)
                 .numberOfGuestPerRoom(requestDto.getNumOfGuestPerRoom())
-                .bookingIdListPerRoom(
+                .bookingIdList(
                         bookings.stream()
                                 .map(HotelBooking::getId)
                                 .collect(Collectors.toList())
