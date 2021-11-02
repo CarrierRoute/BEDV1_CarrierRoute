@@ -40,6 +40,13 @@ public class HotelBookingService {
         return converter.convertToHotelBookingResponseDto(totalPrice, bookings, bookingRequestDto);
     }
 
+    public HotelBookingDetailsDto getHotelBooking(Long bookingId){
+        HotelBooking hotelBooking = hotelBookingRepository.findById(bookingId)
+                .orElseThrow(() -> new HotelBookingNotFoundException(ErrorMessage.HOTEL_BOOKING_NOT_FOUNDED));
+
+        return converter.convertToHotelBookingDetailsDto(hotelBooking);
+    }
+
     private User getUser(String userId){
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(User.class, userId));

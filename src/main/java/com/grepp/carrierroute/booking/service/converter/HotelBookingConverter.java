@@ -41,4 +41,21 @@ public class HotelBookingConverter {
                 .additionalRequest(requestDto.getAdditionalRequest())
                 .build();
     }
+
+    public HotelBookingDetailsDto convertToHotelBookingDetailsDto(HotelBooking hotelBooking){
+        return HotelBookingDetailsDto.builder()
+                .bookingId(hotelBooking.getId())
+                .hotelRoomId(hotelBooking.getHotelRoom().getId())
+                .hotelId(hotelBooking.getHotelRoom().getHotel().getId())
+                .hotelName(hotelBooking.getHotelRoom().getHotel().getName())
+                .hotelAddress(hotelBooking.getHotelRoom().getHotel().getAddress())
+                .roomType(hotelBooking.getHotelRoom().getRoomType())
+                .guestNumber(hotelBooking.getGuestNumber())
+                .checkInDate(hotelBooking.getCheckInDate())
+                .checkOutDate(hotelBooking.getCheckOutDate())
+                .price(hotelBooking.getPrice())
+                .additionalRequest(hotelBooking.getAdditionalRequest())
+                .bookingDate(hotelBooking.getCreatedDate())
+                .build();
+    }
 }
