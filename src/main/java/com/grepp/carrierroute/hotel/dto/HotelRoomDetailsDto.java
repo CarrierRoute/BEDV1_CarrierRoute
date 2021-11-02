@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class HotelRoomDto {
+public class HotelRoomDetailsDto {
     private Long roomId;
     private RoomType roomType;
     private int maxNumOfGuest;

@@ -3,7 +3,7 @@ package com.grepp.carrierroute.hotel.service.converter;
 import com.grepp.carrierroute.hotel.domain.Hotel;
 import com.grepp.carrierroute.hotel.domain.HotelRoom;
 import com.grepp.carrierroute.hotel.domain.RoomType;
-import com.grepp.carrierroute.hotel.dto.HotelRoomDto;
+import com.grepp.carrierroute.hotel.dto.HotelRoomDetailsDto;
 import com.grepp.carrierroute.hotel.dto.HotelSearchResponseDto;
 import org.springframework.stereotype.Component;
 
@@ -30,8 +30,8 @@ public class HotelConverter {
                 .build();
     }
 
-    private HotelRoomDto convertToHotelRoomDto(HotelRoom hotelRoom){
-        return HotelRoomDto.builder()
+    private HotelRoomDetailsDto convertToHotelRoomDto(HotelRoom hotelRoom){
+        return HotelRoomDetailsDto.builder()
                 .roomId(hotelRoom.getId())
                 .roomType(hotelRoom.getRoomType())
                 .maxNumOfGuest(hotelRoom.getMaxNumOfGuest())
@@ -40,9 +40,9 @@ public class HotelConverter {
                 .build();
     }
 
-    private Map<RoomType, List<HotelRoomDto>> convertHotelRoomDtosByType(List<HotelRoom> hotelRooms){
+    private Map<RoomType, List<HotelRoomDetailsDto>> convertHotelRoomDtosByType(List<HotelRoom> hotelRooms){
         return hotelRooms.stream()
                 .map(this::convertToHotelRoomDto)
-                .collect(Collectors.groupingBy(HotelRoomDto::getRoomType));
+                .collect(Collectors.groupingBy(HotelRoomDetailsDto::getRoomType));
     }
 }

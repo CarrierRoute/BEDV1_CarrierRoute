@@ -22,5 +22,5 @@ public class HotelSearchResponseDto {
     private LocalTime checkInTime;
     private LocalTime checkOutTime;
     private String hotelPhotoUrl;
-    private Map<RoomType, List<HotelRoomDto>> roomsByType;
+    private Map<RoomType, List<HotelRoomDetailsDto>> roomsByType;
 }
