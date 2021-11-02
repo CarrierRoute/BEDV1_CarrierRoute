@@ -29,9 +29,6 @@ public class HotelBooking {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @Column(name = "total_price", nullable = false)
-    private long totalPrice;
-
     @Column(name = "guest_number", nullable = false)
     private int guestNumber;
 
@@ -47,26 +44,24 @@ public class HotelBooking {
     @Builder
     public HotelBooking(@NonNull User user,
                         @NonNull HotelRoom hotelRoom,
-                        long totalPrice,
                         int guestNumber,
                         @NonNull LocalDate checkInDate,
                         @NonNull LocalDate checkOutDate,
                         String additionalRequest) {
 
-        if(!isValid(totalPrice, guestNumber)){
+        if(!isValid(guestNumber)){
             throw new InvalidHotelBookingParameterException(ErrorMessage.INVALID_HOTEL_BOOKING_PARAMTER);
         }
 
         this.user = user;
         this.hotelRoom = hotelRoom;
-        this.totalPrice = totalPrice;
         this.guestNumber = guestNumber;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
         this.additionalRequest = additionalRequest;
     }
 
-    private boolean isValid(long totalPrice, int guestNumber){
-        return (totalPrice > 0) && (guestNumber > 0);
+    private boolean isValid(int guestNumber){
+        return (guestNumber > 0);
     }
 }
