@@ -1,74 +1,53 @@
 package com.grepp.carrierroute.flight.domain;
 
+import com.grepp.carrierroute.common.BaseTimeEntity;
+import com.grepp.carrierroute.user.domain.User;
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "flight")
-public class Flight {
+public class Flight extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true)
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "airplane_seat_id", referencedColumnName = "id")
+    private AirplaneSeat airplaneSeat;
+
     @Column(name = "departure_city", nullable = false)
     private String departureCity;
-
-    @Column(name = "arrival_city", nullable = false)
-    private String arrivalCity;
 
     @Column(name = "departure_time", nullable = false)
     private LocalDateTime departureDateTime;
 
+    @Column(name = "arrival_city", nullable = false)
+    private String arrivalCity;
+
     @Column(name = "arrival_time", nullable = false)
     private LocalDateTime arrivalDateTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "airline_id", referencedColumnName = "id")
-    private Airline airline;
-
-    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FlightCabinClass> flightCabinClasses = new ArrayList<>();
-
-    public void addFlightCabinClass(FlightCabinClass flightCabinClass) {
-        flightCabinClass.setFlight(this);
-    }
+    @Column(name = "cost", nullable = false)
+    private long cost;
 
     protected Flight(){
 
     }
 
-    public void setAirline(Airline airline) {
-        if(Objects.nonNull(this.airline)) {
-            this.airline.getFlights().remove(this);
-        }
-        this.airline = airline;
-        airline.getFlights().add(this);
-    }
-
-    public FlightCabinClass findFlightCabinClassBy(CabinClass cabinClass){
-        return this.flightCabinClasses.stream().filter(flightCabinClass -> flightCabinClass.getCabinClass().equals(cabinClass)).findFirst().get();
-    }
-
     //GETTER
-    public Long getId(){
-        return this.id;
-    }
-
-    public List<FlightCabinClass> getFlightCabinClasses() {
-        return this.flightCabinClasses;
-    }
+    public Long getId(){ return this.id; }
 
     public String getDepartureCity() {
         return departureCity;
     }
 
-    public String getArrivalCity() {
-        return arrivalCity;
-    }
+    public String getArrivalCity() { return arrivalCity; }
 
     public LocalDateTime getDepartureDateTime() {
         return departureDateTime;
@@ -78,7 +57,9 @@ public class Flight {
         return arrivalDateTime;
     }
 
-    public Airline getAirline() {
-        return airline;
-    }
+    public User getUser() { return user; }
+
+    public AirplaneSeat getAirplaneSeat() { return airplaneSeat; }
+
+    public long getCost() { return cost; }
 }

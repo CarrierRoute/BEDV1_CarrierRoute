@@ -1,36 +1,37 @@
 package com.grepp.carrierroute.flight.domain;
 
+import com.grepp.carrierroute.common.BaseTimeEntity;
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "airline")
-public class Airline {
+public class Airline extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "cancel_policy", length = 3, nullable = false)
-    private String cancelPolicy;
+    @Column(name = "is_cancellation_allowed", nullable = false)
+    private boolean isCancellationAllowed;
 
-    @Column(name = "refund_policy", length = 3, nullable = false)
-    private String refundPolicy;
-
-    @OneToMany(mappedBy = "airline", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Flight> flights = new ArrayList<>();
+    @Column(name = "refund_policy", nullable = false)
+    private int refundPercentage;
 
     protected Airline(){
 
     }
 
-    public void addFlight(Flight flight) {
-        flight.setAirline(this);
+    // getter
+
+    public Long getId() {
+        return id;
     }
 
-    // getter
-    public List<Flight> getFlights() {
-        return flights;
+    public boolean isCancellationAllowed() {
+        return isCancellationAllowed;
+    }
+
+    public int getRefundPercentage() {
+        return refundPercentage;
     }
 }
