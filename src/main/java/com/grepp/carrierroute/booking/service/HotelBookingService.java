@@ -47,6 +47,13 @@ public class HotelBookingService {
         return converter.convertToHotelBookingDetailsDto(hotelBooking);
     }
 
+    public List<HotelBookingDetailsDto> getHotelBookings(String userId){
+        return hotelBookingRepository.findAllByUser(getUser(userId))
+                .stream()
+                .map(converter::convertToHotelBookingDetailsDto)
+                .collect(Collectors.toList());
+    }
+
     private User getUser(String userId){
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(User.class, userId));
