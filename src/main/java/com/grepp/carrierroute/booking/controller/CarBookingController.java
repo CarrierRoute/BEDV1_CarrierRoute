@@ -30,8 +30,8 @@ public class CarBookingController {
     }
 
     @GetMapping("/bookings/cars/{bookingId}")
-    public ResponseEntity<CarBookingResponseDto> getCarBooking(@PathVariable Long bookingId, @CookieValue(value = "userId") String userId) {
-        return new ResponseEntity<>(carBookingService.getCarBooking(bookingId, userId), HttpStatus.OK);
+    public ResponseEntity<CarBookingResponseDto> getCarBooking(@PathVariable Long bookingId) {
+        return new ResponseEntity<>(carBookingService.getCarBookingDetail(bookingId), HttpStatus.OK);
     }
 
     @DeleteMapping("/bookings/cars/{bookingId}")

@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 @Getter
 public class CarSearchDto {
 
-    private String place;
+    private String searchName;
+    private CarSearchType searchType;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
     private Integer age;

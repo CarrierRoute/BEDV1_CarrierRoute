@@ -10,7 +10,7 @@ public class CarConverter {
         return CarResponseDto.builder()
                 .id(car.getId())
                 .grade(car.getGrade())
-                .image(car.getImage())
+                .image(car.getUploadFile())
                 .maxPassengers(car.getMaxPassengers())
                 .price(car.getPrice())
                 .build();
