@@ -1,6 +1,7 @@
 package com.grepp.carrierroute.booking.service.converter;
 
 import com.grepp.carrierroute.booking.domain.HotelBooking;
+import com.grepp.carrierroute.booking.dto.HotelBookingDetailsDto;
 import com.grepp.carrierroute.booking.dto.HotelBookingRequestDto;
 import com.grepp.carrierroute.booking.dto.HotelBookingResponseDto;
 import com.grepp.carrierroute.hotel.domain.HotelRoom;
@@ -29,10 +30,11 @@ public class HotelBookingConverter {
                 .build();
     }
 
-    public HotelBooking convertHotelBooking(User user, HotelRoom room, HotelBookingRequestDto requestDto){
+    public HotelBooking convertToHotelBooking(User user, HotelRoom room, long totalPrice, HotelBookingRequestDto requestDto){
         return HotelBooking.builder()
                 .user(user)
                 .hotelRoom(room)
+                .price(totalPrice)
                 .guestNumber(requestDto.getNumOfGuestPerRoom())
                 .checkInDate(requestDto.getCheckInDate())
                 .checkOutDate(requestDto.getCheckOutDate())
