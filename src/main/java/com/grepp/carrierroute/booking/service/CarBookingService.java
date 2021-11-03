@@ -1,6 +1,7 @@
 package com.grepp.carrierroute.booking.service;
 
 import com.grepp.carrierroute.booking.domain.CarBooking;
+import com.grepp.carrierroute.common.RefundPolicy;
 import com.grepp.carrierroute.exception.NotFoundException;
 import com.grepp.carrierroute.exception.booking.AlreadyBookedCarException;
 import com.grepp.carrierroute.booking.service.converter.CarBookingConverter;
@@ -35,13 +36,19 @@ public class CarBookingService {
 
         validateBookingState(carBookingRequestDto);
 
-        pay(carBookingRequestDto, user, car);
+        long totalPrice = car.calculatePrice(carBookingRequestDto.getAge(), carBookingRequestDto.getStartDateTime(), carBookingRequestDto.getEndDateTime());
+
+        pay(user, totalPrice);
 
         CarBooking carBooking = createCarBooking(carBookingRequestDto, user, car);
 
         CarBooking save = carBookingRepository.save(carBooking);
 
         return carBookingConverter.convertCarBookingResponseDto(save, car);
+    }
+
+    private void pay(User user, long totalPrice) {
+        user.subtractPoint(totalPrice);
     }
 
     private CarBooking createCarBooking(CarBookingRequestDto carBookingRequestDto, User user, Car car) {
@@ -53,20 +60,11 @@ public class CarBookingService {
                 .build();
     }
 
-    private void pay(CarBookingRequestDto carBookingRequestDto, User user, Car car) {
-        long totalPrice = car.getPrice() * getBookingDuration(carBookingRequestDto.getStartDateTime(), carBookingRequestDto.getEndDateTime());
-        user.subtractPoint(totalPrice);
-    }
-
     private void validateBookingState(CarBookingRequestDto carBookingRequestDto) {
         carBookingRepository.findByIdAndDateTime(carBookingRequestDto.getCarId(), carBookingRequestDto.getStartDateTime(), carBookingRequestDto.getEndDateTime())
                 .ifPresent(carBooking -> {
                     throw new AlreadyBookedCarException(carBookingRequestDto.getCarId());
                 });
-    }
-
-    private long getBookingDuration(LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        return ChronoUnit.HOURS.between(startDateTime, endDateTime);
     }
 
     private Car getCar(CarBookingRequestDto carBookingRequestDto) {
@@ -111,7 +109,22 @@ public class CarBookingService {
     }
 
     private void refund(CarBooking carBooking, User user) {
-        long totalPrice = carBooking.getCar().getPrice() * getBookingDuration(carBooking.getStartDateTime(), carBooking.getEndDateTime());
-        user.addPoint(totalPrice);
+        long price = carBooking.getPrice();
+        LocalDateTime startDateTime = carBooking.getStartDateTime();
+        RefundPolicy refundPolicy = carBooking.getCar().getCarCompany().getRefundPolicy();
+
+        long remainingDays = getRemainingDays(startDateTime);
+
+        long refundPrice = refundPolicy.calculateRefundPrice(price, remainingDays);
+
+        refund(user, refundPrice);
+    }
+
+    private void refund(User user, long refundPrice) {
+        user.addPoint(refundPrice);
+    }
+
+    private long getRemainingDays(LocalDateTime startDateTime) {
+        return ChronoUnit.DAYS.between(startDateTime, LocalDateTime.now());
     }
 }

@@ -5,5 +5,16 @@ import lombok.Getter;
 @Getter
 public enum CancelPolicy {
 
-    C00, C01, C02, C03, C04, CO5
+    C00(true),
+    C01(false);
+
+    private boolean value;
+
+    CancelPolicy(boolean value) {
+        this.value = value;
+    }
+
+    public boolean isNotRefundable() {
+        return !value;
+    }
 }

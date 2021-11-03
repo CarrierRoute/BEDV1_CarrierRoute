@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Entity
 @Table(name = "car")
@@ -22,6 +24,11 @@ public class Car extends BaseTimeEntity {
 
     public static final int MAX_PASSENGER = 12;
     public static final int MIN_PASSENGER = 1;
+
+    private final int LOWER_AGE_LIMIT = 25;
+    private final int UPPER_AGE_LIMIT = 70;
+    private final int LOWER_AGE_ADDITIONAL_PRICE = 10;
+    private final int UPPER_AGE_ADDITIONAL_PRICE = 20;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -104,5 +111,25 @@ public class Car extends BaseTimeEntity {
 
     public Airport getAirport() {
         return airport;
+    }
+
+    public long calculatePrice(int age, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        long result = price * getBookingDuration(startDateTime, endDateTime);
+        
+        if (age < LOWER_AGE_LIMIT) {
+            result += result / LOWER_AGE_ADDITIONAL_PRICE;
+            return result;
+        }
+
+        if (age > UPPER_AGE_LIMIT) {
+            result += result / UPPER_AGE_ADDITIONAL_PRICE;
+            return result;
+        }
+
+        return result;
+    }
+
+    private long getBookingDuration(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        return ChronoUnit.HOURS.between(startDateTime, endDateTime);
     }
 }

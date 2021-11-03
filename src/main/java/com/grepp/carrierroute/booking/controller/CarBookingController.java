@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -19,7 +20,7 @@ public class CarBookingController {
     private final CarBookingService carBookingService;
 
     @PostMapping("/bookings/cars")
-    public ResponseEntity<CarBookingResponseDto> bookCar(@RequestBody CarBookingRequestDto carBookingRequestDto, @CookieValue(value = "userId") String userId) {
+    public ResponseEntity<CarBookingResponseDto> bookCar(@Valid @RequestBody CarBookingRequestDto carBookingRequestDto, @CookieValue(value = "userId") String userId) {
 
         return new ResponseEntity<>(carBookingService.bookCar(carBookingRequestDto, userId), HttpStatus.CREATED);
     }
