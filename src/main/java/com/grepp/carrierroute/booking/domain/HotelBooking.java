@@ -1,7 +1,6 @@
 package com.grepp.carrierroute.booking.domain;
 
 import com.grepp.carrierroute.common.BaseTimeEntity;
-import com.grepp.carrierroute.exception.hotel.ErrorMessage;
 import com.grepp.carrierroute.hotel.domain.HotelRoom;
 import com.grepp.carrierroute.exception.booking.InvalidHotelBookingParameterException;
 import com.grepp.carrierroute.user.domain.User;
@@ -52,7 +51,7 @@ public class HotelBooking extends BaseTimeEntity {
                         String additionalRequest) {
 
         if(!isValid(guestNumber, price)){
-            throw new InvalidHotelBookingParameterException(ErrorMessage.INVALID_HOTEL_BOOKING_PARAMTER);
+            throw new InvalidHotelBookingParameterException();
         }
 
         this.user = user;

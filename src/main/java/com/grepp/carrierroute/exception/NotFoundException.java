@@ -5,18 +5,16 @@ import lombok.Getter;
 
 @Getter
 public class NotFoundException extends RuntimeException {
-
     private final Class<?> clazz;
     private final String id;
-    private String message;
 
     public NotFoundException(Class<?> clazz, Long id) {
         this(clazz, String.valueOf(id));
     }
 
     public NotFoundException(Class<?> clazz, String id) {
+        super(ExceptionMessageUtils.getMessage(clazz.getSimpleName() + NotFoundException.class.getSimpleName()));
         this.clazz = clazz;
         this.id = id;
-        message = ExceptionMessageUtils.getMessage(clazz.getSimpleName() + this.getClass().getSimpleName());
     }
 }

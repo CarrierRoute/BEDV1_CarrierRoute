@@ -7,10 +7,9 @@ import lombok.Getter;
 public class LackOfPointException extends RuntimeException {
 
     private final Long point;
-    private final String message;
 
     public LackOfPointException(Long point) {
+        super(ExceptionMessageUtils.getMessage(LackOfPointException.class.getSimpleName(), new Object[]{point}));
         this.point = point;
-        this.message = ExceptionMessageUtils.getMessage(this.getClass().getSimpleName(), new Object[]{point});
     }
 }

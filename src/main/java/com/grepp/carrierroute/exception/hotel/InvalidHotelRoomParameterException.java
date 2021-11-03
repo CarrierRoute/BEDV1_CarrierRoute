@@ -1,7 +1,9 @@
 package com.grepp.carrierroute.exception.hotel;
 
+import com.grepp.carrierroute.util.ExceptionMessageUtils;
+
 public class InvalidHotelRoomParameterException extends RuntimeException{
-    public InvalidHotelRoomParameterException(ErrorMessage errorMessage) {
-        super(errorMessage.getMessage());
+    public InvalidHotelRoomParameterException() {
+        super(ExceptionMessageUtils.getMessage(InvalidHotelRoomParameterException.class.getSimpleName()));
     }
 }

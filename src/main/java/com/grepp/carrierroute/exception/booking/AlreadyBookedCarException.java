@@ -7,10 +7,9 @@ import lombok.Getter;
 public class AlreadyBookedCarException extends RuntimeException{
 
     private final Long bookingId;
-    private final String message;
 
     public AlreadyBookedCarException(Long bookingId) {
+        super(ExceptionMessageUtils.getMessage(AlreadyBookedCarException.class.getSimpleName()));
         this.bookingId = bookingId;
-        message = ExceptionMessageUtils.getMessage(this.getClass().getSimpleName());
     }
 }

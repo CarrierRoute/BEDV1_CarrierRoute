@@ -1,13 +1,12 @@
 package com.grepp.carrierroute.hotel.service;
 
 import com.grepp.carrierroute.booking.repository.HotelBookingRepository;
+import com.grepp.carrierroute.exception.NotFoundException;
 import com.grepp.carrierroute.hotel.domain.Hotel;
 import com.grepp.carrierroute.hotel.domain.HotelRoom;
 import com.grepp.carrierroute.hotel.domain.RoomType;
 import com.grepp.carrierroute.hotel.dto.*;
 import com.grepp.carrierroute.exception.hotel.EmptyHotelInfoException;
-import com.grepp.carrierroute.exception.hotel.ErrorMessage;
-import com.grepp.carrierroute.exception.hotel.HotelInfoNotFoundedException;
 import com.grepp.carrierroute.hotel.repository.HotelRepository;
 import com.grepp.carrierroute.hotel.service.converter.HotelConverter;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +32,7 @@ public class HotelService {
         List<HotelRoom> roomsMatchedByRequest = findRoomsByHotelAndRequest(hotel, requestDto);
 
         if(roomsMatchedByRequest.isEmpty()){
-            throw new EmptyHotelInfoException(ErrorMessage.HOTEL_NOT_FOUNDED_MATCHED_BY_REQUEST);
+            throw new EmptyHotelInfoException();
         }
 
         return converter.convertToHotelSearchResponseDto(hotel, roomsMatchedByRequest);
@@ -43,15 +42,15 @@ public class HotelService {
         List<HotelSearchResponseDto> hotelSearchResults = findHotelsByRequest(requestDto);
 
         if(hotelSearchResults.isEmpty()){
-            throw new EmptyHotelInfoException(ErrorMessage.HOTEL_NOT_FOUNDED_MATCHED_BY_REQUEST);
+            throw new EmptyHotelInfoException();
         }
 
         return hotelSearchResults;
     }
 
-    private Hotel findHotelById(Long id) throws HotelInfoNotFoundedException{
+    private Hotel findHotelById(Long id){
         return hotelRepository.findById(id)
-                .orElseThrow(()->new HotelInfoNotFoundedException(ErrorMessage.HOTEL_NOT_FOUNDED));
+                .orElseThrow(()->new NotFoundException(Hotel.class, id));
     }
 
     private List<Hotel> findHotelsByDestination(DestinationType type, String destination){

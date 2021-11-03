@@ -1,13 +1,13 @@
 package com.grepp.carrierroute.booking.service;
 
 import com.grepp.carrierroute.booking.domain.HotelBooking;
+import com.grepp.carrierroute.booking.dto.HotelBookingDetailsDto;
 import com.grepp.carrierroute.booking.dto.HotelBookingRequestDto;
 import com.grepp.carrierroute.booking.dto.HotelBookingResponseDto;
 import com.grepp.carrierroute.exception.booking.InsufficentRoomException;
 import com.grepp.carrierroute.booking.repository.HotelBookingRepository;
 import com.grepp.carrierroute.booking.service.converter.HotelBookingConverter;
 import com.grepp.carrierroute.exception.NotFoundException;
-import com.grepp.carrierroute.exception.hotel.ErrorMessage;
 import com.grepp.carrierroute.hotel.domain.HotelRoom;
 import com.grepp.carrierroute.hotel.repository.HotelRoomRepository;
 import com.grepp.carrierroute.user.domain.User;
@@ -42,7 +42,7 @@ public class HotelBookingService {
 
     public HotelBookingDetailsDto getHotelBooking(Long bookingId){
         HotelBooking hotelBooking = hotelBookingRepository.findById(bookingId)
-                .orElseThrow(() -> new HotelBookingNotFoundException(ErrorMessage.HOTEL_BOOKING_NOT_FOUNDED));
+                .orElseThrow(() -> new NotFoundException(HotelBooking.class, bookingId));
 
         return converter.convertToHotelBookingDetailsDto(hotelBooking);
     }
@@ -71,7 +71,7 @@ public class HotelBookingService {
                 .collect(Collectors.toList());
 
         if(roomsToBook.size() < requestNumberOfRoom){
-            throw new InsufficentRoomException(ErrorMessage.INSUFFICIENT_HOTEL_ROOM_TO_BOOK);
+            throw new InsufficentRoomException();
         }
 
         return roomsToBook;

@@ -1,7 +1,6 @@
 package com.grepp.carrierroute.hotel.domain;
 
 import com.grepp.carrierroute.common.BaseTimeEntity;
-import com.grepp.carrierroute.exception.hotel.ErrorMessage;
 import com.grepp.carrierroute.exception.hotel.InvalidHotelRoomParameterException;
 import lombok.*;
 
@@ -43,7 +42,7 @@ public class HotelRoom extends BaseTimeEntity {
                      @NonNull Hotel hotel)
     {
         if(!isValid(maxNumOfGuest, pricePerDay)){
-            throw new InvalidHotelRoomParameterException(ErrorMessage.INVALID_HOTEL_ROOM_PARAMETER);
+            throw new InvalidHotelRoomParameterException();
         }
 
         this.roomType = roomType;
