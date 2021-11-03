@@ -86,6 +86,8 @@ public class Hotel extends BaseTimeEntity {
         this.checkInTime = checkInTime;
         this.checkOutTime = checkOutTime;
         this.photoUrl = photoUrl;
+        this.isCancellationAllowed = isCancellationAllowd;
+        this.refundPercentage = refundPercentage;
         this.hotelRooms = new ArrayList<>();
     }
 

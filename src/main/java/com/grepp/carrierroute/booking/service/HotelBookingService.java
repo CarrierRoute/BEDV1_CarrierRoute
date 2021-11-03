@@ -4,6 +4,7 @@ import com.grepp.carrierroute.booking.domain.HotelBooking;
 import com.grepp.carrierroute.booking.dto.HotelBookingDetailsDto;
 import com.grepp.carrierroute.booking.dto.HotelBookingRequestDto;
 import com.grepp.carrierroute.booking.dto.HotelBookingResponseDto;
+import com.grepp.carrierroute.exception.booking.CancellationNotAllowedException;
 import com.grepp.carrierroute.exception.booking.InsufficentRoomException;
 import com.grepp.carrierroute.booking.repository.HotelBookingRepository;
 import com.grepp.carrierroute.booking.service.converter.HotelBookingConverter;
@@ -33,7 +34,7 @@ public class HotelBookingService {
     public HotelBookingResponseDto bookRooms(HotelBookingRequestDto bookingRequestDto, String userId){
         User user = getUser(userId);
         List<HotelRoom> roomsToBook = getAvailableRooms(bookingRequestDto);
-        long totalPrice = calculateTotalPrice(roomsToBook, bookingRequestDto.getCheckInDate(), bookingRequestDto.getCheckOutDate());
+        long totalPrice = calculateTotalBookingPrice(roomsToBook, bookingRequestDto.getCheckInDate(), bookingRequestDto.getCheckOutDate());
 
         List<HotelBooking> bookings = bookRooms(user, roomsToBook, totalPrice, bookingRequestDto);
 
@@ -45,6 +46,18 @@ public class HotelBookingService {
                 .orElseThrow(() -> new NotFoundException(HotelBooking.class, bookingId));
 
         return converter.convertToHotelBookingDetailsDto(hotelBooking);
+    }
+
+    public void cancelHotelBooking(Long bookingId, String userId){
+        User user = getUser(userId);
+        HotelBooking hotelBooking = hotelBookingRepository.findByIdAndUser(bookingId, user)
+                .orElseThrow(() -> new NotFoundException(HotelBooking.class, bookingId));
+
+        if(!isCancellationAllowed(hotelBooking)){
+            throw new CancellationNotAllowedException(hotelBooking.getClass(), bookingId);
+        }
+
+        cancelBooking(user, hotelBooking);
     }
 
     public List<HotelBookingDetailsDto> getHotelBookings(String userId){
@@ -90,22 +103,39 @@ public class HotelBookingService {
     }
 
     private HotelBooking bookRoom(User user, HotelRoom roomToBook, HotelBookingRequestDto bookingRequestDto){
-        long price = calculatePrice(roomToBook, bookingRequestDto.getCheckInDate(), bookingRequestDto.getCheckOutDate());
+        long price = calculateBookingPrice(roomToBook, bookingRequestDto.getCheckInDate(), bookingRequestDto.getCheckOutDate());
         return hotelBookingRepository.save(converter.convertToHotelBooking(user, roomToBook, price, bookingRequestDto));
+    }
+
+    private void cancelBooking(User user, HotelBooking hotelBooking){
+        refundPoints(user, caculateRefundPrice(hotelBooking));
+        hotelBookingRepository.delete(hotelBooking);
+    }
+
+    private boolean isCancellationAllowed(HotelBooking hotelBooking){
+        return hotelBooking.getHotelRoom().getHotel().isCancellationAllowed();
     }
 
     private void payPoints(User user, long totalPrice){
         user.subtractPoint(totalPrice);
     }
 
-    private long calculateTotalPrice(List<HotelRoom> rooms, LocalDate checkInDate, LocalDate checkOutDate){
+    private void refundPoints(User user, long refundPoints) {
+        user.addPoint(refundPoints);
+    }
+
+    private long calculateTotalBookingPrice(List<HotelRoom> rooms, LocalDate checkInDate, LocalDate checkOutDate){
         return rooms.stream()
                 .mapToLong(room -> room.getPricePerDay() * ChronoUnit.DAYS.between(checkInDate, checkOutDate))
                 .sum();
-
     }
 
-    private long calculatePrice(HotelRoom room, LocalDate checkInDate, LocalDate checkOutDate){
+    private long calculateBookingPrice(HotelRoom room, LocalDate checkInDate, LocalDate checkOutDate){
         return room.getPricePerDay() * ChronoUnit.DAYS.between(checkInDate, checkOutDate);
+    }
+
+    private long caculateRefundPrice(HotelBooking hotelBooking){
+        long refundPercentage = hotelBooking.getHotelRoom().getHotel().getRefundPercentage();
+        return (hotelBooking.getPrice() * refundPercentage) / 100L;
     }
 }
