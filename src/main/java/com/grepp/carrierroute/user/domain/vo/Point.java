@@ -1,6 +1,6 @@
 package com.grepp.carrierroute.user.domain.vo;
 
-import com.grepp.carrierroute.booking.exception.LackOfPointException;
+import com.grepp.carrierroute.exception.booking.LackOfPointException;
 import lombok.Getter;
 
 import javax.persistence.Embeddable;
@@ -13,7 +13,7 @@ public class Point {
 
     public void subtract(long totalPrice){
         if (this.point < totalPrice) {
-            throw new LackOfPointException("Lack of Point. Current Point : " + this.point);
+            throw new LackOfPointException(this.point);
         }
         this.point -= totalPrice;
     }

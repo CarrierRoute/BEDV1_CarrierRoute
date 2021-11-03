@@ -3,12 +3,10 @@ package com.grepp.carrierroute.car.service;
 import com.grepp.carrierroute.booking.repository.CarBookingRepository;
 import com.grepp.carrierroute.car.domain.Car;
 import com.grepp.carrierroute.car.domain.CarCompany;
-import com.grepp.carrierroute.car.domain.CarGrade;
 import com.grepp.carrierroute.car.dto.CarCreationDto;
 import com.grepp.carrierroute.car.dto.CarResponseDto;
 import com.grepp.carrierroute.car.dto.CarSearchDto;
-import com.grepp.carrierroute.car.dto.CarSearchType;
-import com.grepp.carrierroute.car.exception.CarCompanyNotFoundException;
+import com.grepp.carrierroute.exception.NotFoundException;
 import com.grepp.carrierroute.car.repository.CarCompanyRepository;
 import com.grepp.carrierroute.car.repository.CarRepository;
 import com.grepp.carrierroute.car.service.converter.CarConverter;
@@ -63,6 +61,6 @@ public class CarService {
 
     private CarCompany getCarCompany(CarCreationDto carCreationDto) {
         return carCompanyRepository.findById(carCreationDto.getCarCompanyId())
-                .orElseThrow(() -> new CarCompanyNotFoundException(" "));
+                .orElseThrow(() -> new NotFoundException(CarCompany.class, carCreationDto.getCarCompanyId()));
     }
 }

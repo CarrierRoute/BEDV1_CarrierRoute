@@ -2,9 +2,9 @@ package com.grepp.carrierroute.hotel.service;
 
 import com.grepp.carrierroute.hotel.domain.Hotel;
 import com.grepp.carrierroute.hotel.dto.*;
-import com.grepp.carrierroute.hotel.exception.EmptyHotelInfoException;
-import com.grepp.carrierroute.hotel.exception.ErrorMessage;
-import com.grepp.carrierroute.hotel.exception.HotelInfoNotFoundedException;
+import com.grepp.carrierroute.exception.hotel.EmptyHotelInfoException;
+import com.grepp.carrierroute.exception.hotel.ErrorMessage;
+import com.grepp.carrierroute.exception.hotel.HotelInfoNotFoundedException;
 import com.grepp.carrierroute.hotel.repository.HotelRepository;
 import com.grepp.carrierroute.hotel.service.converter.HotelConverter;
 import lombok.RequiredArgsConstructor;

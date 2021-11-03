@@ -1,4 +1,4 @@
-package com.grepp.carrierroute.hotel.exception;
+package com.grepp.carrierroute.exception.hotel;
 
 public enum ErrorMessage {
     HOTEL_NOT_FOUNDED("호텔 정보가 없습니다."),

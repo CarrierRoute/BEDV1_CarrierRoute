@@ -23,12 +23,6 @@ public class Car extends BaseTimeEntity {
     public static final int MAX_PASSENGER = 12;
     public static final int MIN_PASSENGER = 1;
 
-    public static final int MAX_PRICE = 100000;
-    public static final int MIN_PRICE = 1000;
-
-    public static final int MAX_PASSENGER = 12;
-    public static final int MIN_PASSENGER = 1;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -1,4 +1,4 @@
-package com.grepp.carrierroute.hotel.exception;
+package com.grepp.carrierroute.exception.hotel;
 
 public class HotelInfoNotFoundedException extends RuntimeException{
     public HotelInfoNotFoundedException(ErrorMessage errorMessage) {
