@@ -1,9 +1,9 @@
 package com.grepp.carrierroute.booking.domain;
 
 import com.grepp.carrierroute.common.BaseTimeEntity;
+import com.grepp.carrierroute.exception.hotel.ErrorMessage;
 import com.grepp.carrierroute.hotel.domain.HotelRoom;
-import com.grepp.carrierroute.hotel.exception.ErrorMessage;
-import com.grepp.carrierroute.booking.exception.InvalidHotelBookingParameterException;
+import com.grepp.carrierroute.exception.booking.InvalidHotelBookingParameterException;
 import com.grepp.carrierroute.user.domain.User;
 import lombok.*;
 

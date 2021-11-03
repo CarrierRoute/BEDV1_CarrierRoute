@@ -1,6 +1,7 @@
-package com.grepp.carrierroute.booking.exception;
+package com.grepp.carrierroute.exception.booking;
 
-import com.grepp.carrierroute.hotel.exception.ErrorMessage;
+
+import com.grepp.carrierroute.exception.hotel.ErrorMessage;
 
 public class InsufficentRoomException extends RuntimeException{
     public InsufficentRoomException(ErrorMessage errorMessage) {

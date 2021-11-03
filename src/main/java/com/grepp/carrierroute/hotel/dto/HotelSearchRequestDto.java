@@ -1,7 +1,7 @@
 package com.grepp.carrierroute.hotel.dto;
 
-import com.grepp.carrierroute.hotel.exception.ErrorMessage;
-import com.grepp.carrierroute.hotel.exception.InvalidHotelSearchParameterException;
+import com.grepp.carrierroute.exception.hotel.ErrorMessage;
+import com.grepp.carrierroute.exception.hotel.InvalidHotelSearchParameterException;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;

@@ -3,14 +3,14 @@ package com.grepp.carrierroute.booking.service;
 import com.grepp.carrierroute.booking.domain.HotelBooking;
 import com.grepp.carrierroute.booking.dto.HotelBookingRequestDto;
 import com.grepp.carrierroute.booking.dto.HotelBookingResponseDto;
-import com.grepp.carrierroute.booking.exception.InsufficentRoomException;
+import com.grepp.carrierroute.exception.booking.InsufficentRoomException;
 import com.grepp.carrierroute.booking.repository.HotelBookingRepository;
 import com.grepp.carrierroute.booking.service.converter.HotelBookingConverter;
+import com.grepp.carrierroute.exception.NotFoundException;
+import com.grepp.carrierroute.exception.hotel.ErrorMessage;
 import com.grepp.carrierroute.hotel.domain.HotelRoom;
-import com.grepp.carrierroute.hotel.exception.ErrorMessage;
 import com.grepp.carrierroute.hotel.repository.HotelRoomRepository;
 import com.grepp.carrierroute.user.domain.User;
-import com.grepp.carrierroute.user.exception.UserNotFoundException;
 import com.grepp.carrierroute.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,7 +42,7 @@ public class HotelBookingService {
 
     private User getUser(String userId){
         return userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(ErrorMessage.USER_NOT_FOUNDED.getMessage()));
+                .orElseThrow(() -> new NotFoundException(User.class, userId));
     }
 
     private List<HotelRoom> getAvailableRooms(HotelBookingRequestDto bookingRequestDto){

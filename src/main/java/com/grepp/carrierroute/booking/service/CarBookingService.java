@@ -1,23 +1,20 @@
 package com.grepp.carrierroute.booking.service;
 
 import com.grepp.carrierroute.booking.domain.CarBooking;
-import com.grepp.carrierroute.booking.exception.AlreadyBookedException;
-import com.grepp.carrierroute.booking.exception.CarBookingNotFoundException;
+import com.grepp.carrierroute.exception.NotFoundException;
+import com.grepp.carrierroute.exception.booking.AlreadyBookedCarException;
 import com.grepp.carrierroute.booking.service.converter.CarBookingConverter;
 import com.grepp.carrierroute.booking.dto.CarBookingRequestDto;
 import com.grepp.carrierroute.booking.dto.CarBookingResponseDto;
 import com.grepp.carrierroute.booking.repository.CarBookingRepository;
 import com.grepp.carrierroute.car.domain.Car;
-import com.grepp.carrierroute.car.exception.CarNotFoundException;
 import com.grepp.carrierroute.car.repository.CarRepository;
 import com.grepp.carrierroute.user.domain.User;
-import com.grepp.carrierroute.user.exception.UserNotFoundException;
 import com.grepp.carrierroute.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -64,7 +61,7 @@ public class CarBookingService {
     private void validateBookingState(CarBookingRequestDto carBookingRequestDto) {
         carBookingRepository.findByIdAndDateTime(carBookingRequestDto.getCarId(), carBookingRequestDto.getStartDateTime(), carBookingRequestDto.getEndDateTime())
                 .ifPresent(carBooking -> {
-                    throw new AlreadyBookedException(MessageFormat.format("Already Booked Car. Car Id : {0}", carBookingRequestDto.getCarId()));
+                    throw new AlreadyBookedCarException(carBookingRequestDto.getCarId());
                 });
     }
 
@@ -74,12 +71,12 @@ public class CarBookingService {
 
     private Car getCar(CarBookingRequestDto carBookingRequestDto) {
         return carRepository.findById(carBookingRequestDto.getCarId())
-                .orElseThrow(() -> new CarNotFoundException(MessageFormat.format("Car Not Found, Car Id : {0}", carBookingRequestDto.getCarId())));
+                .orElseThrow(() -> new NotFoundException(Car.class, carBookingRequestDto.getCarId()));
     }
 
     private User getUser(String userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(MessageFormat.format("User Not Found. User Id : {0}", userId)));
+                .orElseThrow(() -> new NotFoundException(User.class, userId));
     }
 
     @Transactional(readOnly = true)
@@ -94,12 +91,12 @@ public class CarBookingService {
         Long id = carBooking.getCar().getId();
         return carRepository.findById(id)
                 .map(car -> carBookingConverter.convertCarBookingResponseDto(carBooking, car))
-                .orElseThrow(() -> new RuntimeException("Not Found Car. Car Id : " + id));
+                .orElseThrow(() -> new NotFoundException(Car.class, id));
     }
 
     private CarBooking getCarBooking(Long bookingId) {
         return carBookingRepository.findById(bookingId)
-                .orElseThrow(() -> new CarBookingNotFoundException(MessageFormat.format("Not Found CarBooking. Booking Id :{0}", bookingId)));
+                .orElseThrow(() -> new NotFoundException(CarBooking.class, bookingId));
     }
 
     @Transactional
