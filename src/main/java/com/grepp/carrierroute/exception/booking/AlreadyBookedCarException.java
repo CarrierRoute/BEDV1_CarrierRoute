@@ -9,7 +9,7 @@ public class AlreadyBookedCarException extends RuntimeException{
     private final Long bookingId;
 
     public AlreadyBookedCarException(Long bookingId) {
-        super(ExceptionMessageUtils.getMessage(AlreadyBookedCarException.class.getSimpleName()));
+        super(ExceptionMessageUtils.getMessage("exception.already_booked_car"));
         this.bookingId = bookingId;
     }
 }
