@@ -1,19 +1,19 @@
 package com.grepp.carrierroute.flight.dto;
 
-import com.grepp.carrierroute.flight.domain.CabinClass;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.Column;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Builder
 @Getter
+@Setter
 public class FlightSearchRequestDto {
     private String departureCity;
-    private String arrivalCity;
     private LocalDate departureDate;
+    private String arrivalCity;
+    private LocalDate arrivalDate;
     private String cabinClass;
     private Long headCount;
 }

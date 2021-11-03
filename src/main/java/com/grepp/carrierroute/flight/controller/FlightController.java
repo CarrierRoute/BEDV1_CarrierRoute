@@ -1,14 +1,8 @@
 package com.grepp.carrierroute.flight.controller;
 
-import com.grepp.carrierroute.flight.dto.FlightSearchRequestDto;
-import com.grepp.carrierroute.flight.dto.FlightSearchResponseDto;
+import com.grepp.carrierroute.flight.dto.*;
 import com.grepp.carrierroute.flight.service.FlightService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class FlightController {
@@ -19,12 +13,12 @@ public class FlightController {
     }
 
     @GetMapping("/flights")
-    public List<FlightSearchResponseDto> getFlights(@RequestBody FlightSearchRequestDto flightSearchRequestDto){
-        return flightService.findFlightsBy(flightSearchRequestDto);
+    public FlightsSearchResponseDto getFlights(@RequestParam("searchTypeName") SearchType searchType, @RequestBody FlightSearchRequestDto flightSearchRequestDto){
+        return flightService.getFlights(searchType,flightSearchRequestDto);
     }
 
     @GetMapping("/flights/{flightId}")
     public FlightSearchResponseDto getFlight(@PathVariable Long flightId){
-        return flightService.findFlightBy(flightId);
+        return flightService.getFlight(flightId);
     }
 }

@@ -2,7 +2,11 @@ package com.grepp.carrierroute.flight.domain;
 
 import com.grepp.carrierroute.common.BaseTimeEntity;
 import com.grepp.carrierroute.user.domain.User;
+import lombok.Builder;
+import lombok.NonNull;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -38,6 +42,21 @@ public class Flight extends BaseTimeEntity {
 
     protected Flight(){
 
+    }
+
+    @Builder
+    public Flight(@NonNull AirplaneSeat airplaneSeat,
+                  @NotNull String departureCity,
+                  @NonNull LocalDateTime departureDateTime,
+                  @NotNull String arrivalCity,
+                  @NonNull LocalDateTime arrivalDateTime,
+                  long cost) {
+        this.airplaneSeat = airplaneSeat;
+        this.departureCity = departureCity;
+        this.departureDateTime = departureDateTime;
+        this.arrivalCity = arrivalCity;
+        this.arrivalDateTime = arrivalDateTime;
+        this.cost = cost;
     }
 
     //GETTER
