@@ -2,8 +2,6 @@ package com.grepp.carrierroute.hotel.controller;
 
 import com.grepp.carrierroute.hotel.dto.HotelSearchRequestDto;
 import com.grepp.carrierroute.hotel.dto.HotelSearchResponseDto;
-import com.grepp.carrierroute.hotel.exception.EmptyHotelInfoException;
-import com.grepp.carrierroute.hotel.exception.HotelInfoNotFoundedException;
 import com.grepp.carrierroute.hotel.service.HotelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

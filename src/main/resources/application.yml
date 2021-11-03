@@ -24,6 +24,9 @@ spring:
       max-file-size: 50MB
       max-request-size: 500MB
 
+  messages:
+    basename: messages,exceptions
+
 server:
   servlet:
     encoding:

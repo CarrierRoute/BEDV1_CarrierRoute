@@ -4,6 +4,7 @@ import com.grepp.carrierroute.car.domain.Car;
 import com.grepp.carrierroute.car.repository.CarRepository;
 import lombok.Getter;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -28,5 +29,4 @@ public enum CarSearchType {
     }
 
     public abstract List<Car> get(CarRepository carRepository, List<Long> bookedCarIds, CarSearchDto carSearchDto);
-
 }

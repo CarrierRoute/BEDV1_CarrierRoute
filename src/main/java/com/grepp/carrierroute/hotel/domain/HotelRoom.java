@@ -1,8 +1,8 @@
 package com.grepp.carrierroute.hotel.domain;
 
 import com.grepp.carrierroute.common.BaseTimeEntity;
-import com.grepp.carrierroute.hotel.exception.ErrorMessage;
-import com.grepp.carrierroute.hotel.exception.InvalidHotelRoomParameterException;
+import com.grepp.carrierroute.exception.hotel.ErrorMessage;
+import com.grepp.carrierroute.exception.hotel.InvalidHotelRoomParameterException;
 import lombok.*;
 
 import javax.persistence.*;

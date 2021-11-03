@@ -1,8 +1,8 @@
 package com.grepp.carrierroute.booking.dto;
 
-import com.grepp.carrierroute.booking.exception.InvalidHotelBookingParameterException;
+import com.grepp.carrierroute.exception.booking.InvalidHotelBookingParameterException;
+import com.grepp.carrierroute.exception.hotel.ErrorMessage;
 import com.grepp.carrierroute.hotel.domain.RoomType;
-import com.grepp.carrierroute.hotel.exception.ErrorMessage;
 import lombok.Builder;
 import lombok.Getter;
 
