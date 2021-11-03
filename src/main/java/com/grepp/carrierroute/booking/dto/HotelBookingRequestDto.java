@@ -1,7 +1,6 @@
 package com.grepp.carrierroute.booking.dto;
 
 import com.grepp.carrierroute.exception.booking.InvalidHotelBookingParameterException;
-import com.grepp.carrierroute.exception.hotel.ErrorMessage;
 import com.grepp.carrierroute.hotel.domain.RoomType;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,7 +21,7 @@ public class HotelBookingRequestDto {
     @Builder
     public HotelBookingRequestDto(LocalDate checkInDate, LocalDate checkOutDate, List<Long> candidatesOfRoom, RoomType roomType, int numOfGuest, int numOfRoom, String additionalRequest) {
         if(!isValid(numOfGuest, numOfRoom)){
-            throw new InvalidHotelBookingParameterException(ErrorMessage.INVALID_HOTEL_BOOKING_PARAMTER);
+            throw new InvalidHotelBookingParameterException();
         }
 
         this.checkInDate = checkInDate;

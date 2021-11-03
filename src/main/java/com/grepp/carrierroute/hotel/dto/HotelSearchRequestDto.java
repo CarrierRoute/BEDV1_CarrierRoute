@@ -1,6 +1,5 @@
 package com.grepp.carrierroute.hotel.dto;
 
-import com.grepp.carrierroute.exception.hotel.ErrorMessage;
 import com.grepp.carrierroute.exception.hotel.InvalidHotelSearchParameterException;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,7 +25,7 @@ public class HotelSearchRequestDto {
                                  int numOfRoom)
     {
         if(!isValid(numOfGuest, numOfRoom, startDate, endDate)){
-            throw new InvalidHotelSearchParameterException(ErrorMessage.INVALID_HOTEL_SEARCH_PARAMTER);
+            throw new InvalidHotelSearchParameterException();
         }
 
         this.destinationType = destinationType;

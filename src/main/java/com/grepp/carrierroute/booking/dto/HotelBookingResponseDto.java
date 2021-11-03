@@ -13,5 +13,5 @@ public class HotelBookingResponseDto {
     LocalDate checkOutDate;
     long totalPrice;
     int numberOfGuestPerRoom;
-    List<Long> bookingIdListPerRoom;
+    List<Long> bookingIdList;
 }

@@ -1,13 +1,13 @@
 package com.grepp.carrierroute.booking.service;
 
 import com.grepp.carrierroute.booking.domain.HotelBooking;
+import com.grepp.carrierroute.booking.dto.HotelBookingDetailsDto;
 import com.grepp.carrierroute.booking.dto.HotelBookingRequestDto;
 import com.grepp.carrierroute.booking.dto.HotelBookingResponseDto;
 import com.grepp.carrierroute.exception.booking.InsufficentRoomException;
 import com.grepp.carrierroute.booking.repository.HotelBookingRepository;
 import com.grepp.carrierroute.booking.service.converter.HotelBookingConverter;
 import com.grepp.carrierroute.exception.NotFoundException;
-import com.grepp.carrierroute.exception.hotel.ErrorMessage;
 import com.grepp.carrierroute.hotel.domain.HotelRoom;
 import com.grepp.carrierroute.hotel.repository.HotelRoomRepository;
 import com.grepp.carrierroute.user.domain.User;
@@ -40,6 +40,20 @@ public class HotelBookingService {
         return converter.convertToHotelBookingResponseDto(totalPrice, bookings, bookingRequestDto);
     }
 
+    public HotelBookingDetailsDto getHotelBooking(Long bookingId){
+        HotelBooking hotelBooking = hotelBookingRepository.findById(bookingId)
+                .orElseThrow(() -> new NotFoundException(HotelBooking.class, bookingId));
+
+        return converter.convertToHotelBookingDetailsDto(hotelBooking);
+    }
+
+    public List<HotelBookingDetailsDto> getHotelBookings(String userId){
+        return hotelBookingRepository.findAllByUser(getUser(userId))
+                .stream()
+                .map(converter::convertToHotelBookingDetailsDto)
+                .collect(Collectors.toList());
+    }
+
     private User getUser(String userId){
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(User.class, userId));
@@ -57,7 +71,7 @@ public class HotelBookingService {
                 .collect(Collectors.toList());
 
         if(roomsToBook.size() < requestNumberOfRoom){
-            throw new InsufficentRoomException(ErrorMessage.INSUFFICIENT_HOTEL_ROOM_TO_BOOK);
+            throw new InsufficentRoomException();
         }
 
         return roomsToBook;
@@ -71,8 +85,13 @@ public class HotelBookingService {
         payPoints(user, totalPrice);
 
         return roomsToBook.stream()
-                .map(room -> hotelBookingRepository.save(converter.convertHotelBooking(user, room, bookingRequestDto)))
+                .map(room -> bookRoom(user, room, bookingRequestDto))
                 .collect(Collectors.toList());
+    }
+
+    private HotelBooking bookRoom(User user, HotelRoom roomToBook, HotelBookingRequestDto bookingRequestDto){
+        long price = calculatePrice(roomToBook, bookingRequestDto.getCheckInDate(), bookingRequestDto.getCheckOutDate());
+        return hotelBookingRepository.save(converter.convertToHotelBooking(user, roomToBook, price, bookingRequestDto));
     }
 
     private void payPoints(User user, long totalPrice){
@@ -84,5 +103,9 @@ public class HotelBookingService {
                 .mapToLong(room -> room.getPricePerDay() * ChronoUnit.DAYS.between(checkInDate, checkOutDate))
                 .sum();
 
+    }
+
+    private long calculatePrice(HotelRoom room, LocalDate checkInDate, LocalDate checkOutDate){
+        return room.getPricePerDay() * ChronoUnit.DAYS.between(checkInDate, checkOutDate);
     }
 }

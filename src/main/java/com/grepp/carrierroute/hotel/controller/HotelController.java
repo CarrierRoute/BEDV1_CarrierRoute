@@ -18,11 +18,11 @@ public class HotelController {
 
     @GetMapping("/hotels")
     public List<HotelSearchResponseDto> getHotels(@RequestBody HotelSearchRequestDto searchRequestDto){
-        return hotelService.findHotelsBy(searchRequestDto);
+        return hotelService.getHotels(searchRequestDto);
     }
 
     @GetMapping("/hotels/{hotelId}")
     public HotelSearchResponseDto getHotel(@PathVariable Long hotelId, @RequestBody HotelSearchRequestDto searchRequestDto){
-        return hotelService.findHotelBy(hotelId, searchRequestDto);
+        return hotelService.getHotel(hotelId, searchRequestDto);
     }
 }
