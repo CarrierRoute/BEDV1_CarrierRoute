@@ -22,5 +22,6 @@ public class HotelSearchResponseDto {
     private LocalTime checkInTime;
     private LocalTime checkOutTime;
     private String hotelPhotoUrl;
+    private boolean isCancellationAllowed;
     private Map<RoomType, List<HotelRoomDetailsDto>> roomsByType;
 }

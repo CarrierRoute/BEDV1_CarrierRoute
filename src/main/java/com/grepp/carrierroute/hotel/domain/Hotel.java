@@ -1,6 +1,7 @@
 package com.grepp.carrierroute.hotel.domain;
 
 import com.grepp.carrierroute.common.BaseTimeEntity;
+import com.grepp.carrierroute.exception.hotel.InvalidHotelParameterException;
 import lombok.*;
 
 import javax.persistence.*;
@@ -48,6 +49,12 @@ public class Hotel extends BaseTimeEntity {
     @Column(name = "photo_url", length = 100)
     private String photoUrl;
 
+    @Column(name = "is_cancellation_allowed", nullable = false)
+    private boolean isCancellationAllowed;
+
+    @Column(name = "refund_percentage")
+    private int refundPercentage;
+
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HotelRoom> hotelRooms;
 
@@ -61,8 +68,14 @@ public class Hotel extends BaseTimeEntity {
                  String description,
                  @NonNull LocalTime checkInTime,
                  @NonNull LocalTime checkOutTime,
-                 String photoUrl)
+                 String photoUrl,
+                 boolean isCancellationAllowd,
+                 int refundPercentage)
     {
+        if(!isValid(isCancellationAllowed, refundPercentage)){
+            throw new InvalidHotelParameterException();
+        }
+
         this.name = name;
         this.address = address;
         this.city = city;
@@ -74,5 +87,13 @@ public class Hotel extends BaseTimeEntity {
         this.checkOutTime = checkOutTime;
         this.photoUrl = photoUrl;
         this.hotelRooms = new ArrayList<>();
+    }
+
+    boolean isValid(boolean isCancellationAllowed, long refundPercentage){
+        if(isCancellationAllowed && (refundPercentage <= 0 || refundPercentage > 100)){
+            return false;
+        }
+
+        return true;
     }
 }
