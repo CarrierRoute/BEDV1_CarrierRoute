@@ -43,11 +43,13 @@ public class FlightService {
                 flightSearchRequestDto.getDepartureDate(),
                 flightSearchRequestDto.getArrivalCity(),
                 flightSearchRequestDto.getCabinClass());
+
         List<Flight> arrivalFlights = flightRepository.findArrivalFlightsByRound(
                 flightSearchRequestDto.getArrivalCity(),
                 flightSearchRequestDto.getArrivalDate(),
                 flightSearchRequestDto.getDepartureCity(),
                 flightSearchRequestDto.getCabinClass());
+
         return flightConverter.convertFlightsSearchResponseDtoByRound(
                 departureFlights,
                 arrivalFlights);
