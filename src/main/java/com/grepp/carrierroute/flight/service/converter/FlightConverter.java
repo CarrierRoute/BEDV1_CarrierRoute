@@ -33,7 +33,7 @@ public class FlightConverter {
                 .arrivalCity(flight.getArrivalCity())
                 .arrivalDateTime(flight.getArrivalDateTime())
                 .cost(flight.getCost())
-                .airlineName(flight.getAirplaneSeat().getAirplane().getAirline().getName())
+                .airplaneId(flight.getAirplaneSeat().getAirplane().getId())
                 .build();
     }
 
@@ -58,7 +58,7 @@ public class FlightConverter {
                 .departureDateTime(flight.getDepartureDateTime())
                 .arrivalCity(flight.getArrivalCity())
                 .arrivalDateTime(flight.getArrivalDateTime())
-                .airlineName(flight.getAirplaneSeat().getAirplane().getName())
+                .airplaneId(flight.getAirplaneSeat().getAirplane().getId())
                 .cost(flight.getCost())
                 .build();
 

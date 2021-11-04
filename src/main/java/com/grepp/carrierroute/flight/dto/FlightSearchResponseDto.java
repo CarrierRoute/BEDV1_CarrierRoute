@@ -2,7 +2,6 @@ package com.grepp.carrierroute.flight.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-
 import java.time.LocalDateTime;
 
 @Getter
@@ -12,6 +11,6 @@ public class FlightSearchResponseDto {
     private LocalDateTime departureDateTime;
     private String arrivalCity;
     private LocalDateTime arrivalDateTime;
-    private String airlineName;
+    private Long airplaneId;
     private long cost;
 }
