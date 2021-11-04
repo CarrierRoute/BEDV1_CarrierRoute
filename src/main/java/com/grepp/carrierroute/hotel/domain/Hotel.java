@@ -92,10 +92,6 @@ public class Hotel extends BaseTimeEntity {
     }
 
     boolean isValid(boolean isCancellationAllowed, long refundPercentage){
-        if(isCancellationAllowed && (refundPercentage <= 0 || refundPercentage > 100)){
-            return false;
-        }
-
-        return true;
+        return (!isCancellationAllowed) || (refundPercentage > 0 && refundPercentage <= 100);
     }
 }

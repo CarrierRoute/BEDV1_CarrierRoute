@@ -108,7 +108,7 @@ public class HotelBookingService {
     }
 
     private void cancelBooking(User user, HotelBooking hotelBooking){
-        refundPoints(user, caculateRefundPrice(hotelBooking));
+        refundPoints(user, calculateRefundPrice(hotelBooking));
         hotelBookingRepository.delete(hotelBooking);
     }
 
@@ -134,7 +134,7 @@ public class HotelBookingService {
         return room.getPricePerDay() * ChronoUnit.DAYS.between(checkInDate, checkOutDate);
     }
 
-    private long caculateRefundPrice(HotelBooking hotelBooking){
+    private long calculateRefundPrice(HotelBooking hotelBooking){
         long refundPercentage = hotelBooking.getHotelRoom().getHotel().getRefundPercentage();
         return (hotelBooking.getPrice() * refundPercentage) / 100L;
     }
