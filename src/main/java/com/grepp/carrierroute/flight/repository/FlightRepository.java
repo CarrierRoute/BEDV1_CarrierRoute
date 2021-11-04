@@ -30,8 +30,8 @@ public interface FlightRepository extends JpaRepository<Flight,Long> {
 
     @Query(value = "select f from Flight f INNER JOIN FETCH f.airplaneSeat aps " +
             "WHERE function('date_format', f.arrivalDateTime, '%Y-%m-%d') = :arrivalDate AND " +
-            "f.departureCity = :departureCity AND " +
-            "f.arrivalCity = :arrivalCity AND " +
+            "f.departureCity = :arrivalCity AND " +
+            "f.arrivalCity = :departureCity AND " +
             "aps.cabinClass >= :cabinClass AND " +
             "f.user.id IS NULL")
     List<Flight> findArrivalFlightsByRound(@Param("arrivalCity")String arrivalCity, @Param("arrivalDate")LocalDate arrivalDate,
