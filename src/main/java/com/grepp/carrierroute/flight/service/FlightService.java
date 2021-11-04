@@ -1,53 +1,61 @@
 package com.grepp.carrierroute.flight.service;
 
-import com.grepp.carrierroute.flight.domain.CabinClass;
+import com.grepp.carrierroute.flight.dto.FlightSearchResponseDto;
 import com.grepp.carrierroute.flight.domain.Flight;
 import com.grepp.carrierroute.flight.dto.FlightSearchRequestDto;
-import com.grepp.carrierroute.flight.dto.FlightSearchResponseDto;
-import com.grepp.carrierroute.flight.repository.FlightCabinClassRepository;
+import com.grepp.carrierroute.flight.dto.FlightsSearchResponseDto;
+import com.grepp.carrierroute.flight.dto.SearchType;
 import com.grepp.carrierroute.flight.repository.FlightRepository;
 import com.grepp.carrierroute.flight.service.converter.FlightConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
 public class FlightService {
 
     private final FlightRepository flightRepository;
-    private final FlightCabinClassRepository flightCabinClassRepository;
     private final FlightConverter flightConverter;
 
-    public FlightService(FlightRepository flightRepository, FlightCabinClassRepository flightCabinClassRepository, FlightConverter flightConverter) {
+    public FlightService(FlightRepository flightRepository, FlightConverter flightConverter) {
         this.flightRepository = flightRepository;
-        this.flightCabinClassRepository = flightCabinClassRepository;
         this.flightConverter = flightConverter;
     }
 
-    public List<FlightSearchResponseDto> findFlightsBy(FlightSearchRequestDto flightSearchRequestDto) {
-        List<Flight> flights = findFlightsBy(flightSearchRequestDto.getDepartureCity(),flightSearchRequestDto.getDepartureDate(),
-                                            flightSearchRequestDto.getArrivalCity(),flightSearchRequestDto.getHeadCount(),
-                                            flightSearchRequestDto.getCabinClass());
-        return flights.stream()
-                        .map(flight -> flightConverter.convertFlightSearchResponseDto(flight,
-                                                                                    flight.findFlightCabinClassBy(CabinClass.valueOf(flightSearchRequestDto.getCabinClass())).getSeatCost()))
-                        .collect(Collectors.toList());
+    public FlightsSearchResponseDto getFlights(SearchType searchType, FlightSearchRequestDto flightSearchRequestDto) {
+        return searchType.getFlightSearchType().get(this,flightSearchRequestDto);
     }
 
-    private List<Flight> findFlightsBy(String departureCity, LocalDate departureDate, String arrivalCity, Long headCount, String cabinClass) {
-        List<Long> flightIds = flightRepository.findFlightsBy(arrivalCity,departureDate,departureCity,headCount,cabinClass);
-        return flightIds.stream()
-                        .map(flightId -> flightRepository.findById(flightId).get())
-                        .collect(Collectors.toList());
+    public FlightsSearchResponseDto findFlightsByOneway(FlightSearchRequestDto flightSearchRequestDto) {
+        return flightConverter.convertFlightsSearchResponseDtoByOneway(
+                flightRepository.findFlightsByOneway(
+                        flightSearchRequestDto.getDepartureCity(),
+                        flightSearchRequestDto.getDepartureDate(),
+                        flightSearchRequestDto.getArrivalCity(),
+                        flightSearchRequestDto.getCabinClass()));
     }
 
-    public FlightSearchResponseDto findFlightBy(Long flightId) {
-        return flightConverter.convertFlightSearchResponseDto(flightRepository.findById(flightId).get(),
-                                                            flightCabinClassRepository.findById(flightId).get().getSeatCost());
+    public FlightsSearchResponseDto findFlightsByRound(FlightSearchRequestDto flightSearchRequestDto) {
+        List<Flight> departureFlights = flightRepository.findDepartureFlightsByRound(
+                flightSearchRequestDto.getDepartureCity(),
+                flightSearchRequestDto.getDepartureDate(),
+                flightSearchRequestDto.getArrivalCity(),
+                flightSearchRequestDto.getCabinClass());
+
+        List<Flight> arrivalFlights = flightRepository.findArrivalFlightsByRound(
+                flightSearchRequestDto.getArrivalCity(),
+                flightSearchRequestDto.getArrivalDate(),
+                flightSearchRequestDto.getDepartureCity(),
+                flightSearchRequestDto.getCabinClass());
+
+        return flightConverter.convertFlightsSearchResponseDtoByRound(
+                departureFlights,
+                arrivalFlights);
+    }
+
+    public FlightSearchResponseDto getFlight(Long flightId) {
+        return flightConverter.convertFlightSearchResponseDto(flightRepository.findById(flightId).get());
     }
 }
