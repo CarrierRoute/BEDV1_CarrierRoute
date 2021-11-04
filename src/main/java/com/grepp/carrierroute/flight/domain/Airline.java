@@ -1,10 +1,14 @@
 package com.grepp.carrierroute.flight.domain;
 
 import com.grepp.carrierroute.common.BaseTimeEntity;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "airline")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Airline extends BaseTimeEntity {
 
     @Id
@@ -20,12 +24,7 @@ public class Airline extends BaseTimeEntity {
     @Column(name = "refund_policy", nullable = false)
     private int refundPercentage;
 
-    protected Airline(){
-
-    }
-
     // getter
-
     public Long getId() {
         return id;
     }

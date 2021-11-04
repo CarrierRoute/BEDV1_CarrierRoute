@@ -1,9 +1,13 @@
 package com.grepp.carrierroute.flight.domain;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Table(name = "airplane")
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Airplane {
 
     @Id
@@ -16,10 +20,6 @@ public class Airplane {
 
     @Column(name = "name", nullable = false)
     private String name;
-
-    protected Airplane(){
-
-    }
 
     // GETTER
 

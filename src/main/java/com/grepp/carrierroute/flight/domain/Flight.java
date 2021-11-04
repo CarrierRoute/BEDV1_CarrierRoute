@@ -2,7 +2,9 @@ package com.grepp.carrierroute.flight.domain;
 
 import com.grepp.carrierroute.common.BaseTimeEntity;
 import com.grepp.carrierroute.user.domain.User;
+import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import javax.persistence.*;
@@ -11,6 +13,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "flight")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Flight extends BaseTimeEntity {
 
     @Id
@@ -39,10 +42,6 @@ public class Flight extends BaseTimeEntity {
 
     @Column(name = "cost", nullable = false)
     private long cost;
-
-    protected Flight(){
-
-    }
 
     @Builder
     public Flight(@NonNull AirplaneSeat airplaneSeat,
