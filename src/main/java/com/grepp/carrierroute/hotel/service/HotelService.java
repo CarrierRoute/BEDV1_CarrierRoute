@@ -6,7 +6,6 @@ import com.grepp.carrierroute.hotel.domain.Hotel;
 import com.grepp.carrierroute.hotel.domain.HotelRoom;
 import com.grepp.carrierroute.hotel.domain.RoomType;
 import com.grepp.carrierroute.hotel.dto.*;
-import com.grepp.carrierroute.exception.hotel.EmptyHotelInfoException;
 import com.grepp.carrierroute.hotel.repository.HotelRepository;
 import com.grepp.carrierroute.hotel.service.converter.HotelConverter;
 import lombok.RequiredArgsConstructor;
@@ -32,20 +31,14 @@ public class HotelService {
         List<HotelRoom> roomsMatchedByRequest = findRoomsByHotelAndRequest(hotel, requestDto);
 
         if(roomsMatchedByRequest.isEmpty()){
-            throw new EmptyHotelInfoException();
+            return null;
         }
 
         return converter.convertToHotelSearchResponseDto(hotel, roomsMatchedByRequest);
     }
 
     public List<HotelSearchResponseDto> getHotels(HotelSearchRequestDto requestDto){
-        List<HotelSearchResponseDto> hotelSearchResults = findHotelsByRequest(requestDto);
-
-        if(hotelSearchResults.isEmpty()){
-            throw new EmptyHotelInfoException();
-        }
-
-        return hotelSearchResults;
+        return findHotelsByRequest(requestDto);
     }
 
     private Hotel findHotelById(Long id){
