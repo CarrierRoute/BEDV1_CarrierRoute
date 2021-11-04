@@ -1,5 +1,6 @@
 package com.grepp.carrierroute;
 
+import com.grepp.carrierroute.util.ExceptionMessageUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.MessageSource;
@@ -27,7 +28,10 @@ public class CarrierRouteApplication {
 
 	@Bean
 	public MessageSourceAccessor messageSourceAccessor() {
-		return new MessageSourceAccessor(messageSource());
+		MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(messageSource());
+		ExceptionMessageUtils.setExceptionMessageUtils(messageSourceAccessor);
+
+		return messageSourceAccessor;
 	}
 
 }

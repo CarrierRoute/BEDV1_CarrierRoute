@@ -1,6 +1,5 @@
 package com.grepp.carrierroute.util;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Component;
 import java.util.Locale;
@@ -10,8 +9,7 @@ public class ExceptionMessageUtils {
 
     private static MessageSourceAccessor messageSourceAccessor;
 
-    @Autowired
-    private ExceptionMessageUtils(MessageSourceAccessor messageSourceAccessor) {
+    public static void setExceptionMessageUtils(MessageSourceAccessor messageSourceAccessor) {
         ExceptionMessageUtils.messageSourceAccessor = messageSourceAccessor;
     }
 

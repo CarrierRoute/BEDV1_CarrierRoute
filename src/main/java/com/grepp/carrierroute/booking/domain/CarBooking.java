@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -32,13 +33,17 @@ public class CarBooking {
     @Column(nullable = false)
     private String place;
 
+    @Column(nullable = false)
+    private long price;
+
     @Builder
-    public CarBooking(Long id, Car car, User user, LocalDateTime startDateTime, LocalDateTime endDateTime, String place) {
+    public CarBooking(Long id, Car car, User user, LocalDateTime startDateTime, LocalDateTime endDateTime, String place, long price) {
         this.id = id;
         this.car = car;
         this.user = user;
         this.place = place;
         this.period = new Period(startDateTime, endDateTime);
+        this.price = price;
     }
 
     public Long getId() {
@@ -63,5 +68,9 @@ public class CarBooking {
 
     public String getPlace() {
         return place;
+    }
+
+    public long getPrice() {
+        return price;
     }
 }
