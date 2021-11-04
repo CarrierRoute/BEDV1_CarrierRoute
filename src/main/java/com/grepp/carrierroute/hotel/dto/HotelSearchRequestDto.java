@@ -19,24 +19,24 @@ public class HotelSearchRequestDto {
     @Builder
     public HotelSearchRequestDto(@NonNull DestinationType destinationType,
                                  @NonNull String destinationName,
-                                 @NonNull LocalDate startDate,
-                                 @NonNull LocalDate endDate,
+                                 @NonNull LocalDate checkInDate,
+                                 @NonNull LocalDate checkOutDate,
                                  int numOfGuest,
                                  int numOfRoom)
     {
-        if(!isValid(numOfGuest, numOfRoom, startDate, endDate)){
+        if(!isValid(numOfGuest, numOfRoom, checkInDate, checkOutDate)){
             throw new InvalidHotelSearchParameterException();
         }
 
         this.destinationType = destinationType;
         this.destinationName = destinationName;
-        this.checkInDate = startDate;
-        this.checkOutDate = endDate;
+        this.checkInDate = checkInDate;
+        this.checkOutDate = checkOutDate;
         this.numOfGuest = numOfGuest;
         this.numOfRoom = numOfRoom;
     }
 
-    private boolean isValid(int guestNumber, int numOfRoom, LocalDate startDate, LocalDate endDate){
-        return (guestNumber > 0) && (numOfRoom > 0) && (endDate.isAfter(startDate));
+    private boolean isValid(int guestNumber, int numOfRoom, LocalDate checkInDate, LocalDate checkOutDate){
+        return (guestNumber > 0) && (numOfRoom > 0) && (checkOutDate.isAfter(checkInDate));
     }
 }
