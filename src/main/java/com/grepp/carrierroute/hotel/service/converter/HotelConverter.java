@@ -26,6 +26,7 @@ public class HotelConverter {
                 .checkInTime(hotel.getCheckInTime())
                 .checkOutTime(hotel.getCheckOutTime())
                 .hotelPhotoUrl(hotel.getPhotoUrl())
+                .isCancellationAllowed(hotel.isCancellationAllowed())
                 .roomsByType(convertHotelRoomDtosByType(rooms))
                 .build();
     }

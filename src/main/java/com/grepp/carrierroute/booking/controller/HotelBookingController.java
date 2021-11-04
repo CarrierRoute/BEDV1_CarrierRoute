@@ -28,4 +28,9 @@ public class HotelBookingController {
     public HotelBookingDetailsDto getHotelBooking(@PathVariable Long bookingId){
         return hotelBookingService.getHotelBooking(bookingId);
     }
+
+    @DeleteMapping("/bookings/hotels/{bookingId}")
+    public void cancelHotelBooking(@PathVariable Long bookingId, @CookieValue(value = "userId") String userId){
+        hotelBookingService.cancelHotelBooking(bookingId, userId);
+    }
 }
