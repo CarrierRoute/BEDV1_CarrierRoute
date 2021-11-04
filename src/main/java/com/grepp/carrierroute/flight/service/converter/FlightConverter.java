@@ -9,9 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Component
 public class FlightConverter {
@@ -19,7 +16,7 @@ public class FlightConverter {
     public FlightsSearchResponseDto convertFlightsSearchResponseDtoByOneway(List<Flight> flightsByOneway) {
         return FlightsSearchResponseDto.builder()
                 .onewayData(convertFlightOnewaySearchResponseDto(flightsByOneway))
-                .roundData(new ArrayList<>())
+                .roundData(FlightRoundSearchResponseDto.builder().build())
                 .build();
     }
 
@@ -47,15 +44,12 @@ public class FlightConverter {
                 .build();
     }
 
-    public List<FlightRoundSearchResponseDto> convertFlightRoundSearchResponseDto(List<Flight> departureFlights, List<Flight> arrivalFlights){
-        return IntStream.range(0, departureFlights.size()).mapToObj(i -> convertFlightRoundSearchResponseDto(departureFlights.get(i), arrivalFlights.get(i))).collect(Collectors.toList());
-    }
-
-    public FlightRoundSearchResponseDto convertFlightRoundSearchResponseDto(Flight departureFlight,Flight arrivalFlight){
+    public FlightRoundSearchResponseDto convertFlightRoundSearchResponseDto(List<Flight> departureFlights, List<Flight> arrivalFlights){
         return FlightRoundSearchResponseDto.builder()
-                .departureFlight(convertFlightOnewaySearchResponseDto(departureFlight))
-                .arrivalFlight(convertFlightOnewaySearchResponseDto(arrivalFlight))
+                .departureFlight(convertFlightOnewaySearchResponseDto(departureFlights))
+                .arrivalFlight(convertFlightOnewaySearchResponseDto(arrivalFlights))
                 .build();
+
     }
 
     public FlightSearchResponseDto convertFlightSearchResponseDto(Flight flight) {

@@ -6,6 +6,6 @@ import java.util.List;
 
 @Builder
 public class FlightRoundSearchResponseDto {
-    private FlightOnewaySearchResponseDto departureFlight;
-    private FlightOnewaySearchResponseDto arrivalFlight;
+    private List<FlightOnewaySearchResponseDto> departureFlight;
+    private List<FlightOnewaySearchResponseDto> arrivalFlight;
 }

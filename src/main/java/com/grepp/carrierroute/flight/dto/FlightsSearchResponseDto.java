@@ -8,5 +8,5 @@ import java.util.List;
 @Getter
 public class FlightsSearchResponseDto {
     private List<FlightOnewaySearchResponseDto> onewayData;
-    private List<FlightRoundSearchResponseDto> roundData;
+    private FlightRoundSearchResponseDto roundData;
 }
