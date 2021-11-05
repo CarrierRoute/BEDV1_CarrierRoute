@@ -11,11 +11,7 @@ public class CancellationNotAllowedException extends RuntimeException {
     private final Long id;
 
     public CancellationNotAllowedException(Class<?> clazz, Long id) {
-        super(new StringBuilder()
-                .append(clazz.getSimpleName())
-                .append(" - ")
-                .append(ExceptionMessageUtils.getMessage("exception.cancellation_not_allowedn")).toString()
-        );
+        super(ExceptionMessageUtils.getMessage("exception.cancellation_not_allowed", new Object[]{clazz.getSimpleName()}));
 
         this.clazz = clazz;
         this.id = id;
