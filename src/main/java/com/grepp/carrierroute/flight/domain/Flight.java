@@ -80,4 +80,10 @@ public class Flight extends BaseTimeEntity {
     public AirplaneSeat getAirplaneSeat() { return airplaneSeat; }
 
     public long getCost() { return cost; }
+
+    //SETTER
+
+    public void bookFlightByUserId(User user){
+        this.user = user;
+    }
 }
