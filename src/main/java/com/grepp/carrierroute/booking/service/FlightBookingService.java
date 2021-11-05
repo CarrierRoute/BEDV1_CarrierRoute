@@ -102,18 +102,20 @@ public class FlightBookingService {
     }
 
     private long calculateTotalPoints(List<Flight> selectedFlights) {
-        return selectedFlights.stream().mapToLong(Flight::getCost).sum();
+        return selectedFlights.stream()
+                .mapToLong(Flight::getCost)
+                .sum();
     }
 
     private List<Flight> getRandomFlights(List<Flight> availableFlights, int headCount) {
         Collections.shuffle(availableFlights);
-        return IntStream.range(0, headCount).mapToObj(availableFlights::get).collect(Collectors.toList());
+        return IntStream.range(0, headCount)
+                .mapToObj(availableFlights::get)
+                .collect(Collectors.toList());
     }
 
     private void bookSelectedFlights(User user, List<Flight> selectedFlights) {
-        for (Flight selectedFlight : selectedFlights) {
-            bookSelectedFlight(selectedFlight, user);
-        }
+        selectedFlights.forEach(selectedFlight -> bookSelectedFlight(selectedFlight, user));
     }
 
     private void bookSelectedFlight(Flight selectedFlight, User user) {
@@ -135,7 +137,10 @@ public class FlightBookingService {
     }
 
     private boolean isValidCancel(Flight canceledFlight) {
-        return canceledFlight.getAirplaneSeat().getAirplane().getAirline().isCancellationAllowed();
+        return canceledFlight.getAirplaneSeat()
+                .getAirplane()
+                .getAirline()
+                .isCancellationAllowed();
     }
 
     private User getUser(String userId) {

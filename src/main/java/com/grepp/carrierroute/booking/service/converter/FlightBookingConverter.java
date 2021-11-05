@@ -57,7 +57,9 @@ public class FlightBookingConverter {
     }
 
     public List<BookedFlightResponseDto> convertBookedFlightResponseDtos(List<Flight> bookedFlights) {
-        return bookedFlights.stream().map(this::convertBookedFlightResponseDto).collect(Collectors.toList());
+        return bookedFlights.stream()
+                .map(this::convertBookedFlightResponseDto)
+                .collect(Collectors.toList());
     }
 
     public CancelBookedFlightDto convertCancelBookedFlightDto(Long bookingId) {
