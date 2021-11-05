@@ -10,7 +10,6 @@ import com.grepp.carrierroute.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +31,7 @@ public class FlightBookingService {
 
     @Transactional
     public FlightBookingResponseDto bookFlight(String userId, FlightBookingRequestDto flightBookingRequestDto) {
-        return flightBookingRequestDto.getFlightBookingType().get(this, getUser(userId), flightBookingRequestDto);
+        return flightBookingRequestDto.getFlightBookingType().bookFlight(this, getUser(userId), flightBookingRequestDto);
     }
 
     public FlightBookingResponseDto bookOnewayFlight(User user, FlightBookingRequestDto flightBookingRequestDto) {

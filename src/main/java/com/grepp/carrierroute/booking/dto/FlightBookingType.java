@@ -10,13 +10,13 @@ import java.util.Arrays;
 public enum FlightBookingType {
     ONEWAY("oneway"){
         @Override
-        public FlightBookingResponseDto get(FlightBookingService flightBookingService, User user, FlightBookingRequestDto flightBookingRequestDto) {
+        public FlightBookingResponseDto bookFlight(FlightBookingService flightBookingService, User user, FlightBookingRequestDto flightBookingRequestDto) {
             return flightBookingService.bookOnewayFlight(user, flightBookingRequestDto);
         }
     },
     ROUND("round"){
         @Override
-        public FlightBookingResponseDto get(FlightBookingService flightBookingService, User user, FlightBookingRequestDto flightBookingRequestDto) {
+        public FlightBookingResponseDto bookFlight(FlightBookingService flightBookingService, User user, FlightBookingRequestDto flightBookingRequestDto) {
             return flightBookingService.bookRoundFlight(user, flightBookingRequestDto);
         }
     };
@@ -35,6 +35,6 @@ public enum FlightBookingType {
                 .orElse(ONEWAY);
     }
 
-    public abstract FlightBookingResponseDto get(FlightBookingService flightBookingService, User user, FlightBookingRequestDto flightBookingRequestDto);
+    public abstract FlightBookingResponseDto bookFlight(FlightBookingService flightBookingService, User user, FlightBookingRequestDto flightBookingRequestDto);
 }
 

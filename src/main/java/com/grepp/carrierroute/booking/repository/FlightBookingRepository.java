@@ -17,7 +17,8 @@ public interface FlightBookingRepository extends JpaRepository<Flight, Long> {
             "f.arrivalCity = :arrivalCity AND " +
             "f.arrivalDateTime = :arrivalDateTime AND " +
             "f.airplaneSeat.cabinClass = :cabinClass AND " +
-            "f.airplaneSeat.airplane.id = :airplaneId" +
+            "f.airplaneSeat.airplane.id = :airplaneId AND " +
+            "f.user is null" +
             "")
     List<Flight> findAvailableFlights(@Param("departureCity")String departureCity, @Param("departureDateTime")LocalDateTime departureDateTime,
                                       @Param("arrivalCity")String arrivalCity, @Param("arrivalDateTime")LocalDateTime arrivalDateTime,
