@@ -19,21 +19,21 @@ public class HotelBookingRequestDto {
     String additionalRequest;
 
     @Builder
-    public HotelBookingRequestDto(LocalDate checkInDate, LocalDate checkOutDate, List<Long> candidatesOfRoom, RoomType roomType, int numOfGuest, int numOfRoom, String additionalRequest) {
-        if(!isValid(numOfGuest, numOfRoom)){
+    public HotelBookingRequestDto(LocalDate checkInDate, LocalDate checkOutDate, List<Long> candidateIdListOfRoom, RoomType roomType, int numOfGuestPerRoom, int numOfRoom, String additionalRequest) {
+        if(!isValid(numOfGuestPerRoom, numOfRoom, checkInDate, checkOutDate)){
             throw new InvalidHotelBookingParameterException();
         }
 
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
-        this.candidateIdListOfRoom = candidatesOfRoom;
+        this.candidateIdListOfRoom = candidateIdListOfRoom;
         this.roomType = roomType;
-        this.numOfGuestPerRoom = numOfGuest;
+        this.numOfGuestPerRoom = numOfGuestPerRoom;
         this.numOfRoom = numOfRoom;
         this.additionalRequest = additionalRequest;
     }
 
-    private boolean isValid(int numOfGuest, int numOfRoom){
-        return (numOfGuest > 0 ) && (numOfRoom > 0);
+    private boolean isValid(int numOfGuestPerRoom, int numOfRoom, LocalDate checkInDate, LocalDate checkOutDate){
+        return (numOfGuestPerRoom > 0 ) && (numOfRoom > 0) && (checkOutDate.isAfter(checkInDate));
     }
 }

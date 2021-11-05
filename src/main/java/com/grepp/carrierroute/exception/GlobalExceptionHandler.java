@@ -1,7 +1,9 @@
 package com.grepp.carrierroute.exception;
 
-import com.grepp.carrierroute.exception.booking.AlreadyBookedCarException;
-import com.grepp.carrierroute.exception.booking.LackOfPointException;
+import com.grepp.carrierroute.exception.booking.*;
+import com.grepp.carrierroute.exception.hotel.InvalidHotelParameterException;
+import com.grepp.carrierroute.exception.hotel.InvalidHotelRoomParameterException;
+import com.grepp.carrierroute.exception.hotel.InvalidHotelSearchParameterException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +35,27 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<String> handleLackOfPoint(LackOfPointException exception) {
         log.warn("Lack of Point. Current Point : {}", exception.getPoint());
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({InvalidHotelBookingParameterException.class,
+                        InvalidHotelParameterException.class,
+                        InvalidHotelRoomParameterException.class,
+                        InvalidHotelSearchParameterException.class})
+    public ResponseEntity<String> handleInvalidArgument(Exception exception){
+        log.warn(exception.getMessage());
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<String> handleCancellationNotAllowed(CancellationNotAllowedException exception){
+        log.warn(exception.getMessage());
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<String> handleInsufficientRoom(InsufficentRoomException exception){
+        log.warn(exception.getMessage());
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 

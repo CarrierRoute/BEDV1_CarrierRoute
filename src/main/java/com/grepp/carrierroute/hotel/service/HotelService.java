@@ -6,7 +6,6 @@ import com.grepp.carrierroute.hotel.domain.Hotel;
 import com.grepp.carrierroute.hotel.domain.HotelRoom;
 import com.grepp.carrierroute.hotel.domain.RoomType;
 import com.grepp.carrierroute.hotel.dto.*;
-import com.grepp.carrierroute.exception.hotel.EmptyHotelInfoException;
 import com.grepp.carrierroute.hotel.repository.HotelRepository;
 import com.grepp.carrierroute.hotel.service.converter.HotelConverter;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +16,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,25 +27,19 @@ public class HotelService {
     private final HotelBookingRepository hotelBookingRepository;
     private final HotelConverter converter;
 
-    public HotelSearchResponseDto getHotel(Long id, HotelSearchRequestDto requestDto){
+    public Optional<HotelSearchResponseDto> getHotel(Long id, HotelSearchRequestDto requestDto){
         Hotel hotel = findHotelById(id);
         List<HotelRoom> roomsMatchedByRequest = findRoomsByHotelAndRequest(hotel, requestDto);
 
         if(roomsMatchedByRequest.isEmpty()){
-            throw new EmptyHotelInfoException();
+            return Optional.empty();
         }
 
-        return converter.convertToHotelSearchResponseDto(hotel, roomsMatchedByRequest);
+        return Optional.of(converter.convertToHotelSearchResponseDto(hotel, roomsMatchedByRequest));
     }
 
     public List<HotelSearchResponseDto> getHotels(HotelSearchRequestDto requestDto){
-        List<HotelSearchResponseDto> hotelSearchResults = findHotelsByRequest(requestDto);
-
-        if(hotelSearchResults.isEmpty()){
-            throw new EmptyHotelInfoException();
-        }
-
-        return hotelSearchResults;
+        return findHotelsByRequest(requestDto);
     }
 
     private Hotel findHotelById(Long id){

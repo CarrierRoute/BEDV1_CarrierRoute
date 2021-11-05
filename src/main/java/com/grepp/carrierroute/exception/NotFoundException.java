@@ -13,7 +13,8 @@ public class NotFoundException extends RuntimeException {
     }
 
     public NotFoundException(Class<?> clazz, String id) {
-        super(ExceptionMessageUtils.getMessage("exception.not_found_exception"));
+        super(ExceptionMessageUtils.getMessage("exception.not_found_exception", new Object[]{clazz.getSimpleName()}));
+
         this.clazz = clazz;
         this.id = id;
     }
