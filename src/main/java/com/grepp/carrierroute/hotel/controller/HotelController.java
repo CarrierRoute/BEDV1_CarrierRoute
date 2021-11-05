@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,12 +31,12 @@ public class HotelController {
 
     @GetMapping("/hotels/{hotelId}")
     public ResponseEntity<HotelSearchResponseDto> getHotel(@PathVariable Long hotelId, @RequestBody HotelSearchRequestDto searchRequestDto){
-        HotelSearchResponseDto hotel = hotelService.getHotel(hotelId, searchRequestDto);
+        Optional<HotelSearchResponseDto> hotel = hotelService.getHotel(hotelId, searchRequestDto);
 
-        if(hotel == null){
+        if(hotel.isEmpty()){
             return new ResponseEntity<>(HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(hotel, HttpStatus.OK);
+        return new ResponseEntity<>(hotel.get(), HttpStatus.OK);
     }
 }

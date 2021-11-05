@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,15 +27,15 @@ public class HotelService {
     private final HotelBookingRepository hotelBookingRepository;
     private final HotelConverter converter;
 
-    public HotelSearchResponseDto getHotel(Long id, HotelSearchRequestDto requestDto){
+    public Optional<HotelSearchResponseDto> getHotel(Long id, HotelSearchRequestDto requestDto){
         Hotel hotel = findHotelById(id);
         List<HotelRoom> roomsMatchedByRequest = findRoomsByHotelAndRequest(hotel, requestDto);
 
         if(roomsMatchedByRequest.isEmpty()){
-            return null;
+            return Optional.empty();
         }
 
-        return converter.convertToHotelSearchResponseDto(hotel, roomsMatchedByRequest);
+        return Optional.of(converter.convertToHotelSearchResponseDto(hotel, roomsMatchedByRequest));
     }
 
     public List<HotelSearchResponseDto> getHotels(HotelSearchRequestDto requestDto){
