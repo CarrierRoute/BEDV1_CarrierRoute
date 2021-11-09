@@ -21,7 +21,7 @@ public class Airline extends BaseTimeEntity {
     @Column(name = "is_cancellation_allowed", nullable = false)
     private boolean isCancellationAllowed;
 
-    @Column(name = "refund_policy", nullable = false)
+    @Column(name = "refund_percentage", nullable = false)
     private int refundPercentage;
 
     // getter
