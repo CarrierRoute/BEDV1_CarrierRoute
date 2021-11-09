@@ -13,8 +13,12 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 @Slf4j
@@ -74,5 +78,17 @@ public class GlobalExceptionHandler {
 
     private void putError(ObjectError error, Map<String, String> errors) {
         errors.put(((FieldError) error).getField(), error.getDefaultMessage());
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<List<String>> constraintViolationException(ConstraintViolationException e) {
+        return new ResponseEntity<>(extractErrorMessages(e),HttpStatus.BAD_REQUEST);
+    }
+
+    private List<String> extractErrorMessages(ConstraintViolationException e) {
+        return e.getConstraintViolations()
+                .stream()
+                .map(ConstraintViolation::getMessage)
+                .collect(Collectors.toList());
     }
 }

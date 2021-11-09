@@ -9,13 +9,13 @@ import java.util.Arrays;
 public enum FlightSearchType {
     ONEWAY("oneway"){
         @Override
-        public FlightsSearchResponseDto get(FlightService flightService, FlightSearchRequestDto flightSearchRequestDto) {
+        public FlightsSearchResponseDto findFlights(FlightService flightService, FlightSearchRequestDto flightSearchRequestDto) {
             return flightService.findFlightsByOneway(flightSearchRequestDto);
         }
     },
     ROUND("round"){
         @Override
-        public FlightsSearchResponseDto get(FlightService flightService, FlightSearchRequestDto flightSearchRequestDto) {
+        public FlightsSearchResponseDto findFlights(FlightService flightService, FlightSearchRequestDto flightSearchRequestDto) {
             return flightService.findFlightsByRound(flightSearchRequestDto);
         }
     };
@@ -33,5 +33,5 @@ public enum FlightSearchType {
                 .orElse(ONEWAY);
     }
 
-    public abstract FlightsSearchResponseDto get(FlightService flightService, FlightSearchRequestDto flightSearchRequestDto);
+    public abstract FlightsSearchResponseDto findFlights(FlightService flightService, FlightSearchRequestDto flightSearchRequestDto);
 }

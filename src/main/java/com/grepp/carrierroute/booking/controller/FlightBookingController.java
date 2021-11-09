@@ -2,6 +2,8 @@ package com.grepp.carrierroute.booking.controller;
 
 import com.grepp.carrierroute.booking.dto.*;
 import com.grepp.carrierroute.booking.service.FlightBookingService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,23 +18,23 @@ public class FlightBookingController {
     }
 
     @PostMapping("/bookings/flights")
-    public FlightBookingResponseDto bookFlight(@CookieValue(value = "userId") String userId, @RequestBody FlightBookingRequestDto flightBookingRequestDto){
-        return flightBookingService.bookFlight(userId, flightBookingRequestDto);
+    public ResponseEntity<FlightBookingResponseDto> bookFlight(@CookieValue(value = "userId") String userId, @RequestBody FlightBookingRequestDto flightBookingRequestDto){
+        return new ResponseEntity<>(flightBookingService.bookFlight(userId, flightBookingRequestDto), HttpStatus.CREATED);
     }
 
 
     @GetMapping("/bookings/flights/{bookingId}")
-    public BookedFlightResponseDto getBookedFlight(@PathVariable Long bookingId){
-        return flightBookingService.getBookedFlight(bookingId);
+    public ResponseEntity<BookedFlightResponseDto> getBookedFlight(@PathVariable Long bookingId){
+        return new ResponseEntity<>(flightBookingService.getBookedFlight(bookingId), HttpStatus.OK);
     }
 
     @GetMapping("/bookings/flights")
-    public List<BookedFlightResponseDto> getBookedFlights(@CookieValue(value = "userId") String userId){
-        return flightBookingService.getBookedFlights(userId);
+    public ResponseEntity<List<BookedFlightResponseDto>> getBookedFlights(@CookieValue(value = "userId") String userId){
+        return new ResponseEntity<>(flightBookingService.getBookedFlights(userId), HttpStatus.OK);
     }
 
     @DeleteMapping("/bookings/flights/{bookingId}")
-    public CancelBookedFlightDto cancelBookedFlight(@CookieValue(value = "userId") String userId, @PathVariable Long bookingId){
-        return flightBookingService.cancelBookedFlight(userId, bookingId);
+    public ResponseEntity<CancelBookedFlightDto> cancelBookedFlight(@CookieValue(value = "userId") String userId, @PathVariable Long bookingId){
+        return new ResponseEntity<>(flightBookingService.cancelBookedFlight(userId, bookingId), HttpStatus.OK);
     }
 }

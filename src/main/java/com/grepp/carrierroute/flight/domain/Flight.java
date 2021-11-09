@@ -9,6 +9,7 @@ import lombok.NonNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 
 @Entity
@@ -28,27 +29,32 @@ public class Flight extends BaseTimeEntity {
     @JoinColumn(name = "airplane_seat_id", referencedColumnName = "id")
     private AirplaneSeat airplaneSeat;
 
+    @NotNull(message = "출발 도시가 존재해야 합니다.")
     @Column(name = "departure_city", nullable = false)
     private String departureCity;
 
+    @NotNull(message = "출발 시간이 존재해야 합니다.")
     @Column(name = "departure_time", nullable = false)
     private LocalDateTime departureDateTime;
 
+    @NotNull(message = "도착 도시가 존재해야 합니다.")
     @Column(name = "arrival_city", nullable = false)
     private String arrivalCity;
 
+    @NotNull(message = "도착 시간이 존재해야 합니다.")
     @Column(name = "arrival_time", nullable = false)
     private LocalDateTime arrivalDateTime;
 
+    @PositiveOrZero(message = "항공편 가격은 0 또는 양수이어야 합니다.")
     @Column(name = "cost", nullable = false)
     private long cost;
 
     @Builder
-    public Flight(@NonNull AirplaneSeat airplaneSeat,
-                  @NotNull String departureCity,
-                  @NonNull LocalDateTime departureDateTime,
-                  @NotNull String arrivalCity,
-                  @NonNull LocalDateTime arrivalDateTime,
+    public Flight(AirplaneSeat airplaneSeat,
+                  String departureCity,
+                  LocalDateTime departureDateTime,
+                  String arrivalCity,
+                  LocalDateTime arrivalDateTime,
                   long cost) {
         this.airplaneSeat = airplaneSeat;
         this.departureCity = departureCity;
