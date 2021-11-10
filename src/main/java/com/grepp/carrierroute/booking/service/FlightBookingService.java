@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -94,7 +93,7 @@ public class FlightBookingService {
         User user = getUser(userId);
         Flight canceledFlight = findBookedFlightById(bookingId);
 
-        if (!isValidCancel(canceledFlight)) {
+        if (isNotValidCancel(canceledFlight)) {
             throw new CancellationNotAllowedException(Flight.class, bookingId);
         }
 
@@ -138,8 +137,8 @@ public class FlightBookingService {
 
     }
 
-    private boolean isValidCancel(Flight canceledFlight) {
-        return canceledFlight.getAirplaneSeat()
+    private boolean isNotValidCancel(Flight canceledFlight) {
+        return !canceledFlight.getAirplaneSeat()
                 .getAirplane()
                 .getAirline()
                 .isCancellationAllowed();
