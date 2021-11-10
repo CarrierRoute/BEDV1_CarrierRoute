@@ -1,5 +1,6 @@
 package com.grepp.carrierroute.flight.service;
 
+import com.grepp.carrierroute.exception.NotFoundException;
 import com.grepp.carrierroute.flight.dto.FlightSearchResponseDto;
 import com.grepp.carrierroute.flight.domain.Flight;
 import com.grepp.carrierroute.flight.dto.FlightSearchRequestDto;
@@ -25,7 +26,8 @@ public class FlightService {
     }
 
     public FlightsSearchResponseDto getFlights(SearchType searchType, FlightSearchRequestDto flightSearchRequestDto) {
-        return searchType.getFlightSearchType().get(this,flightSearchRequestDto);
+        return searchType.getFlightSearchType()
+                .findFlights(this,flightSearchRequestDto);
     }
 
     public FlightsSearchResponseDto findFlightsByOneway(FlightSearchRequestDto flightSearchRequestDto) {
@@ -56,6 +58,11 @@ public class FlightService {
     }
 
     public FlightSearchResponseDto getFlight(Long flightId) {
-        return flightConverter.convertFlightSearchResponseDto(flightRepository.findById(flightId).get());
+        return flightConverter.convertFlightSearchResponseDto(findFlightById(flightId));
+    }
+
+    private Flight findFlightById(Long flightId) {
+        return flightRepository.findById(flightId)
+                .orElseThrow(()->new NotFoundException(Flight.class,flightId));
     }
 }

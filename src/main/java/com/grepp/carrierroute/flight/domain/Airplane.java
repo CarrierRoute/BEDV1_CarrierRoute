@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Table(name = "airplane")
 @Entity
@@ -18,6 +19,7 @@ public class Airplane {
     @JoinColumn(name = "airline_id", referencedColumnName = "id")
     private Airline airline;
 
+    @NotNull(message = "비행기 이름은 존재해야 합니다.")
     @Column(name = "name", nullable = false)
     private String name;
 

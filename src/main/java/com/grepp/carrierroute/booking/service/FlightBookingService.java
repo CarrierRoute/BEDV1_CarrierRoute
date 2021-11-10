@@ -4,6 +4,7 @@ import com.grepp.carrierroute.booking.dto.*;
 import com.grepp.carrierroute.booking.repository.FlightBookingRepository;
 import com.grepp.carrierroute.booking.service.converter.FlightBookingConverter;
 import com.grepp.carrierroute.exception.NotFoundException;
+import com.grepp.carrierroute.exception.booking.CancellationNotAllowedException;
 import com.grepp.carrierroute.flight.domain.Flight;
 import com.grepp.carrierroute.user.domain.User;
 import com.grepp.carrierroute.user.repository.UserRepository;
@@ -12,16 +13,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Service
 public class FlightBookingService {
 
-    private FlightBookingRepository flightBookingRepository;
-    private UserRepository userRepository;
-    private FlightBookingConverter flightBookingConverter;
+    private final FlightBookingRepository flightBookingRepository;
+    private final UserRepository userRepository;
+    private final FlightBookingConverter flightBookingConverter;
 
     public FlightBookingService(FlightBookingRepository flightBookingRepository, UserRepository userRepository, FlightBookingConverter flightBookingConverter) {
         this.flightBookingRepository = flightBookingRepository;
@@ -75,9 +75,9 @@ public class FlightBookingService {
 
     @Transactional(readOnly = true)
     public BookedFlightResponseDto getBookedFlight(Long bookingId) {
-        Optional<Flight> bookedFlight = flightBookingRepository.findById(bookingId);
+        Flight bookedFlight = findBookedFlightById(bookingId);
 
-        return flightBookingConverter.convertBookedFlightResponseDto(bookedFlight.get());
+        return flightBookingConverter.convertBookedFlightResponseDto(bookedFlight);
     }
 
     @Transactional(readOnly = true)
@@ -91,12 +91,13 @@ public class FlightBookingService {
     @Transactional
     public CancelBookedFlightDto cancelBookedFlight(String userId, Long bookingId) {
         User user = getUser(userId);
-        Optional<Flight> canceledFlight = flightBookingRepository.findById(bookingId);
+        Flight canceledFlight = findBookedFlightById(bookingId);
 
-        if (!isValidCancel(canceledFlight.get())) {
-            // 예외처리
+        if (isNotValidCancel(canceledFlight)) {
+            throw new CancellationNotAllowedException(Flight.class, bookingId);
         }
-        cancelFlight(user, canceledFlight.get());
+
+        cancelFlight(user, canceledFlight);
 
         return flightBookingConverter.convertCancelBookedFlightDto(bookingId);
     }
@@ -136,8 +137,8 @@ public class FlightBookingService {
 
     }
 
-    private boolean isValidCancel(Flight canceledFlight) {
-        return canceledFlight.getAirplaneSeat()
+    private boolean isNotValidCancel(Flight canceledFlight) {
+        return !canceledFlight.getAirplaneSeat()
                 .getAirplane()
                 .getAirline()
                 .isCancellationAllowed();
@@ -146,6 +147,11 @@ public class FlightBookingService {
     private User getUser(String userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(User.class, userId));
+    }
+
+    private Flight findBookedFlightById(Long bookingId) {
+        return flightBookingRepository.findById(bookingId)
+                .orElseThrow(()-> new NotFoundException(Flight.class, bookingId));
     }
 
 }
