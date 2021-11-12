@@ -1,16 +1,12 @@
 # CarrierRoute
-🧳 너는 캐리어만 챙겨, 항공권&호텔&렌트카 예약 서비스 "CarrierRoute"
+🧳 너는 캐리어만 챙겨, 항공권&호텔&렌트카 예약 서비스 "CarrierRoute"  
 
 ## ✋ 프로젝트 개요
 
-------
-
 CarrierRoute는 [SkyScanner](https://www.skyscanner.co.kr/) 서비스를 클론코딩하는 프로젝트입니다.  
-본 프로젝트에서 여행에 필요한 항공권, 호텔, 렌트카를 조회하고 예약하는 API를 구현하였습니다.
+여행에 필요한 항공권, 호텔, 렌트카를 조회하고 예약하는 API를 구현하였습니다.
 
 ## 💻 기술 스택
-
-------
 
 ### 언어
 ![Java](https://img.shields.io/badge/java-007396.svg?style=for-the-badge&logo=java&logoColor=white)
@@ -34,8 +30,6 @@ CarrierRoute는 [SkyScanner](https://www.skyscanner.co.kr/) 서비스를 클론�
 ![Notion](https://img.shields.io/badge/Notion-000000.svg?style=for-the-badge&logo=notion&logoColor=white)
 
 ## 📖 API 목록
-
-------
 
 ### 항공권 관련 API
 |API|Http Method|URI|
@@ -68,8 +62,6 @@ CarrierRoute는 [SkyScanner](https://www.skyscanner.co.kr/) 서비스를 클론�
 |렌트카 예약 취소|DELETE|/api/v1/bookings/cars/{bookingId}|
 
 ## 👬 팀원 소개
-
-------
 
 |[김진아](https://github.com/nasaoreo)|[이태현](https://github.com/neilsonT)|[허승연](https://github.com/heoseungyeon)|
 |:---:|:---:|:---:|
