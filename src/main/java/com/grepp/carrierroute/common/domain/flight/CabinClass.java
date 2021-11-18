@@ -14,6 +14,17 @@ public class CabinClass {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "name", nullable = false, length = 20)
-    private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "flight_schedule_id", referencedColumnName = "id")
+    private FlightSchedule flightSchedule;
+
+    @Column(name = "cabin_class", nullable = false, length = 20)
+    private String cabinClass;
+
+    @Column(name = "cost", nullable = false)
+    private long cost;
+
+    @Column(name = "quantity", nullable = false)
+    private int quantity;
+
 }

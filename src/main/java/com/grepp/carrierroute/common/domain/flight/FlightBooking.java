@@ -20,10 +20,6 @@ public class FlightBooking {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "flight_schedule_id", referencedColumnName = "id")
-    private FlightSchedule flightSchedule;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cabin_class_id", referencedColumnName = "id")
     private CabinClass cabinClass;
 
