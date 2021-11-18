@@ -1,4 +1,4 @@
-package com.grepp.carrierroute.common.domain.flight;
+package com.grepp.carrierroute.flightschedule.domain;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -18,8 +18,8 @@ public class CabinClass {
     @JoinColumn(name = "flight_schedule_id", referencedColumnName = "id")
     private FlightSchedule flightSchedule;
 
-    @Column(name = "cabin_class", nullable = false, length = 20)
-    private String cabinClass;
+    @Column(name = "name", nullable = false, length = 20)
+    private String name;
 
     @Column(name = "cost", nullable = false)
     private long cost;

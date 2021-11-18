@@ -1,5 +1,6 @@
-package com.grepp.carrierroute.common.domain.flight;
+package com.grepp.carrierroute.flightbooking.domain;
 
+import com.grepp.carrierroute.flightschedule.domain.CabinClass;
 import com.grepp.carrierroute.user.domain.User;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

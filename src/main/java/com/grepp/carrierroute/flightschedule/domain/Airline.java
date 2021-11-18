@@ -1,4 +1,4 @@
-package com.grepp.carrierroute.common.domain.flight;
+package com.grepp.carrierroute.flightschedule.domain;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
